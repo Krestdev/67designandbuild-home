@@ -1,3 +1,4 @@
+import { Faq } from "./faq.collection";
 import { Project } from "./project.collection";
 import { Service } from "./service.collection";
 import { Media } from "./media.collection";
@@ -7,4 +8,5 @@ export const collections = [
   Media,
   Sector,
   Project,
+  Faq,
 ];
