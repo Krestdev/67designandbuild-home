@@ -39,6 +39,7 @@ export const Footer: GlobalConfig = {
           ],
         },
         { name: "url", type: "text" },
+        { name: "copyrightText", type: "text", localized: true },
       ],
     },
   ],
