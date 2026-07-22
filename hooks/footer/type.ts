@@ -1,9 +1,6 @@
-import { MediaResponse } from "@/hooks/media/type";
-
 export type FooterSocialLink = {
   id: string;
   platform: string;
-  icon: MediaResponse | null;
   url: string;
 };
 
