@@ -2,9 +2,9 @@ name: 67 design and build API CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    # branches:
+    #   - main
+    #   - dev
 
 jobs:
   lint:
