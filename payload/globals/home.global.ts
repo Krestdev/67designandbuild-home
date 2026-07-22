@@ -16,6 +16,6 @@ export const Home: GlobalConfig = {
         { name: "heroCTA", type: "text", localized: true },
         { name: "heroCTA2", type: "text", localized: true },
       ]
-    }
+    },
   ],
 };
