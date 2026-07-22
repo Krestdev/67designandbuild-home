@@ -15,7 +15,6 @@ export const Footer: GlobalConfig = {
       type: "array",
       fields: [
         { name: "platform", type: "text" },
-        { name: "icon", type: "upload", relationTo: "media" },
         { name: "url", type: "text" },
       ],
     },
