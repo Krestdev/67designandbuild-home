@@ -4,7 +4,6 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 import { collections } from "@/payload/collections";
 import { globals } from "@/payload/globals";
-import path from "path";
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here

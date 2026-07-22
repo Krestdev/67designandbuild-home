@@ -1,6 +1,6 @@
 import JsonView from "@uiw/react-json-view";
 
-const JsonViewer = ({ json }: { json: any }) => {
+const JsonViewer = ({ json }: { json: object }) => {
   return <JsonView value={json} />;
 };
 
