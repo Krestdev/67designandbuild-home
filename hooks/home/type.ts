@@ -7,8 +7,6 @@ export type HomeResponse = {
   heroContent: string;
   heroCTA: string;
   heroCTA2: string;
-  introContent: string;
-  bannerImage: MediaResponse | null;
   updatedAt: string;
   createdAt: string;
   globalType: string;
