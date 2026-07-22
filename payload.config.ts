@@ -31,10 +31,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || "",
     },
   }),
-  typescript: {
-    outputFile: path.resolve(process.cwd(), "src/payload-types.ts"),
-    // Optional (defaults to true)
-  },
+  
   // If you want to resize images, crop, set focal point, etc.
   // make sure to install it and pass it to the config.
   // This is optional - if you don't need to do these things,
