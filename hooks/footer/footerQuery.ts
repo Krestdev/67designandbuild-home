@@ -1,7 +1,7 @@
 import { BaseQuery } from "../baseQuery";
-import { FooterResponse } from "./type";
+import { FooterGlobal } from "./type";
 
-class FooterQuery extends BaseQuery<FooterResponse, FooterResponse> {
+class FooterQuery extends BaseQuery<FooterGlobal, FooterGlobal> {
   constructor() {
     super("/globals/footer");
   }

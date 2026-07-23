@@ -9,6 +9,5 @@ export const Faq: CollectionConfig = {
   fields: [
     { name: "question", type: "text", localized: true, required: true },
     { name: "answer", type: "richText", localized: true, required: true },
-    { name: "order", type: "number" },
   ],
 };

@@ -1,9 +1,9 @@
 import { BaseQuery } from "../baseQuery";
-import { ServiceResponse } from "./type";
+import { ServicePageGlobal } from "./type";
 
-class ServiceQuery extends BaseQuery<ServiceResponse, ServiceResponse> {
+class ServiceQuery extends BaseQuery<ServicePageGlobal, ServicePageGlobal> {
   constructor() {
-    super("/service");
+    super("/globals/service");
   }
 }
 

@@ -1,13 +1,13 @@
-import { MediaResponse } from "@/hooks/media/type";
+import { Media } from "../type";
 
-export type HomeResponse = {
+
+export interface HomeGlobal {
   id: number;
-  heroImage: MediaResponse | null;
-  heroTitle: string;
-  heroContent: string;
-  heroCTA: string;
-  heroCTA2: string;
-  updatedAt: string;
-  createdAt: string;
-  globalType: string;
+  heroImage?: Media | number | null;
+  heroTitle?: string | null;
+  heroContent?: string | null;
+  heroCTA?: string | null;
+  heroCTA2?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }

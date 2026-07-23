@@ -1,11 +1,11 @@
-import type { SerializedEditorState } from "lexical";
+import { RichText } from "../type";
 
-export type AboutResponse = {
+
+export interface AboutGlobal {
   id: number;
-  title: string;
-  slug: string;
-  content: SerializedEditorState;
-  updatedAt: string;
-  createdAt: string;
-  globalType: string;
-};
+  title?: string | null;
+  slug?: string | null;
+  content?: RichText | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}

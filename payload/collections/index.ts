@@ -1,14 +1,18 @@
 import { Faq } from "./faq.collection";
-import { Project } from "./project.collection";
 import { Service } from "./service.collection";
 import { Media } from "./media.collection";
 import { Sector } from "./sector.collection";
-import { Link } from "./link.collection";
+import { Catalog } from "./catalog.collection";
+import { Blog } from "./blog.collection";
+import { Career } from "./career.collection";
+import { Partners } from "./partners.collection";
 export const collections = [
   Service,
   Media,
   Sector,
-  Project,
+  Catalog,
+  Blog,
+  Career,
+  Partners,
   Faq,
-  Link,
 ];

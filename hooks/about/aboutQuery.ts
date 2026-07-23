@@ -1,7 +1,7 @@
 import { BaseQuery } from "../baseQuery";
-import { AboutResponse } from "./type";
+import { AboutGlobal } from "./type";
 
-class AboutQuery extends BaseQuery<AboutResponse, AboutResponse> {
+class AboutQuery extends BaseQuery<AboutGlobal, AboutGlobal> {
   constructor() {
     super("/globals/about");
   }

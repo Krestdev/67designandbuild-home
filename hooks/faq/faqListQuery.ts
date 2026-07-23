@@ -3,7 +3,7 @@ import { FaqPageGlobal } from "./type";
 
 class FaqQuery extends BaseQuery<FaqPageGlobal, FaqPageGlobal> {
   constructor() {
-    super("/globals/faq");
+    super("/faq");
   }
 }
 

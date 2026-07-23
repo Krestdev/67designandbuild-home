@@ -1,7 +1,7 @@
 import { CollectionConfig } from "payload";
 
-export const Service: CollectionConfig = {
-  slug: "service",
+export const Blog: CollectionConfig = {
+  slug: "blog",
   admin: { useAsTitle: "title" },
   access: {
     read: () => true, // 許可する

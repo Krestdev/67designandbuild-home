@@ -1,7 +1,6 @@
 import { Media, RichText } from "../type";
 
-
-export interface SectorPageGlobal {
+export interface CatalogPageGlobal {
   id: number;
   title?: string | null;
   intro?: string | null;
@@ -9,12 +8,12 @@ export interface SectorPageGlobal {
   updatedAt?: string | null;
 }
 
-export interface Sector {
+export interface Catalog {
   id: number;
   title?: string | null;
   slug?: string | null;
-  image?: Media | number | null;
   content?: RichText | null;
+  preveiw?: Media | number | null; // Note: 'preveiw' is spelled this way in the collection schema
   createdAt: string;
   updatedAt: string;
 }

@@ -1,10 +1,17 @@
-import type { SerializedEditorState } from "lexical";
+import { RichText } from "../type";
 
-export type FaqResponse = {
+export interface FaqPageGlobal {
+  id: number;
+  title?: string | null;
+  intro?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}
+
+export interface Faq {
   id: number;
   question: string;
-  answer: SerializedEditorState;
-  order: number | null;
-  updatedAt: string;
+  answer: RichText;
   createdAt: string;
-};
+  updatedAt: string;
+}

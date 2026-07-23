@@ -30,7 +30,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || "",
     },
   }),
-  
+
   // If you want to resize images, crop, set focal point, etc.
   // make sure to install it and pass it to the config.
   // This is optional - if you don't need to do these things,

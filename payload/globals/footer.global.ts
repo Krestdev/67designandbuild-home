@@ -6,9 +6,15 @@ export const Footer: GlobalConfig = {
     read: () => true,
   },
   fields: [
-    { name: "contactEmail", type: "text" },
-    { name: "contactPhone", type: "text" },
-    { name: "contactAddress", type: "text", localized: true },
+    {
+      name: "contactInfo",
+      type: "group",
+      fields: [
+        { name: "contactEmail", type: "text" },
+        { name: "contactPhone", type: "text" },
+        { name: "contactAddress", type: "text", localized: true },
+      ],
+    },
     { name: "copyrightText", type: "text", localized: true },
     {
       name: "socialLinks",
@@ -18,5 +24,19 @@ export const Footer: GlobalConfig = {
         { name: "url", type: "text" },
       ],
     },
+    {
+      name: "usefullLinks",
+      type: "array",
+      fields: [
+        { name: "lable", type: "text" }
+      ]
+    },
+    {
+      name: "Enterprise",
+      type: "array",
+      fields: [
+        { name: "lable", type: "text" }
+      ]
+    }
   ],
 };

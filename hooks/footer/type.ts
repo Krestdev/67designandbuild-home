@@ -1,17 +1,24 @@
-export type FooterSocialLink = {
-  id: string;
-  platform: string;
-  url: string;
-};
-
-export type FooterResponse = {
+export interface FooterGlobal {
   id: number;
-  contactEmail: string;
-  contactPhone: string;
-  contactAddress: string;
-  copyrightText: string;
-  socialLinks: FooterSocialLink[];
-  updatedAt: string;
-  createdAt: string;
-  globalType: string;
-};
+  contactInfo?: {
+    contactEmail?: string | null;
+    contactPhone?: string | null;
+    contactAddress?: string | null;
+  } | null;
+  copyrightText?: string | null;
+  socialLinks?: {
+    platform?: string | null;
+    url?: string | null;
+    id?: string | null;
+  }[] | null;
+  usefullLinks?: { // Note: 'usefullLinks' is spelled this way in the schema
+    lable?: string | null; // Note: 'lable' is spelled this way in the schema
+    id?: string | null;
+  }[] | null;
+  Enterprise?: {
+    lable?: string | null; // Note: 'lable' is spelled this way in the schema
+    id?: string | null;
+  }[] | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}
