@@ -1,9 +1,9 @@
-import { BaseQuery } from "../baseQuery";
+import { BaseListQuery } from "../baseListQuery";
 import { Service } from "./type";
 
-class ServiceListQuery extends BaseQuery<Service, Service> {
+class ServiceListQuery extends BaseListQuery<Service, Service> {
   constructor() {
-    super("/service");
+    super("/Services");
   }
 }
 

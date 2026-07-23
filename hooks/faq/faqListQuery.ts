@@ -1,7 +1,7 @@
-import { BaseQuery } from "../baseQuery";
+import { BaseListQuery } from "../baseListQuery";
 import { FaqPageGlobal } from "./type";
 
-class FaqListQuery extends BaseQuery<FaqPageGlobal, FaqPageGlobal> {
+class FaqListQuery extends BaseListQuery<FaqPageGlobal, FaqPageGlobal> {
   constructor() {
     super("/faq");
   }

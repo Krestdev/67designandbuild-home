@@ -1,7 +1,7 @@
 import { CollectionConfig } from "payload";
 
 export const Sector: CollectionConfig = {
-  slug: "sector",
+  slug: "Sectors",
   admin: { useAsTitle: "title" },
   access: {
     read: () => true,

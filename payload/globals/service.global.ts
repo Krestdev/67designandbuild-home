@@ -1,7 +1,7 @@
 import { GlobalConfig } from "payload";
 
 export const Service: GlobalConfig = {
-  slug: "service",
+  slug: "Service",
   access: {
     read: () => true, // 許可する
   },

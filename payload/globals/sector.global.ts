@@ -1,7 +1,7 @@
 import { GlobalConfig } from "payload";
 
 export const Sector: GlobalConfig = {
-  slug: "sector",
+  slug: "Sector",
   access: {
     read: () => true, // 許可する
   },

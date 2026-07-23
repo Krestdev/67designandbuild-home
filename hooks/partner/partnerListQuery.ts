@@ -1,7 +1,7 @@
-import { BaseQuery } from "../baseQuery";
+import { BaseListQuery } from "../baseListQuery";
 import { Partner } from "./type";
 
-class PartnerListQuery extends BaseQuery<Partner, Partner> {
+class PartnerListQuery extends BaseListQuery<Partner, Partner> {
   constructor() {
     super("/partners");
   }

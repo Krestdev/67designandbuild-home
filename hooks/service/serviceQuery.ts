@@ -3,7 +3,7 @@ import { ServicePageGlobal } from "./type";
 
 class ServiceQuery extends BaseQuery<ServicePageGlobal, ServicePageGlobal> {
   constructor() {
-    super("/globals/service");
+    super("/globals/Service");
   }
 }
 
