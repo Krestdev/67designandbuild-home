@@ -15,6 +15,15 @@ export class BaseQuery<T, U> {
     }
   };
 
+  getBlobal = async (): Promise<T> => {
+    try {
+      const response = await api.get(this.url);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   post = async (body: U): Promise<T> => {
     try {
       const response = await api.post(this.url, body);

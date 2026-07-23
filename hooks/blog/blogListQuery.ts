@@ -3,7 +3,7 @@ import { Blog } from "./type";
 
 class BlogListQuery extends BaseQuery<Blog, Blog> {
   constructor() {
-    super("/blogs");
+    super("/blog");
   }
 }
 

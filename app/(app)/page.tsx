@@ -1,13 +1,10 @@
 "use client";
 import JsonViewer from "@/components/dev/JsonViewer";
 import FetchError from "@/components/errors";
-import { aboutQuery } from "@/hooks/about/aboutQuery";
-import { ctaBannerQuery } from "@/hooks/cta-banner/ctaBannerQuery";
-import { faqQuery } from "@/hooks/faq/faqQuery";
-import { footerQuery } from "@/hooks/footer/footerQuery";
 import { homeQuery } from "@/hooks/home/homeQuery";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const { data, isLoading, error } = useQuery({
@@ -15,43 +12,7 @@ export default function Home() {
     queryFn: () => homeQuery.get({ depth: 2, locale: "fr" }),
   });
 
-  const {
-    data: faqData,
-    isLoading: isFaqLoading,
-    error: faqError,
-  } = useQuery({
-    queryKey: ["faq"],
-    queryFn: () => faqQuery.get({ depth: 2, locale: "fr" }),
-  });
-
-  const {
-    data: AboutData,
-    isLoading: isAboutLoading,
-    error: aboutError,
-  } = useQuery({
-    queryKey: ["about"],
-    queryFn: () => aboutQuery.get({ depth: 2, locale: "fr" }),
-  });
-
-  const {
-    data: CtaData,
-    isLoading: isCtaLoading,
-    error: ctaError,
-  } = useQuery({
-    queryKey: ["cta"],
-    queryFn: () => ctaBannerQuery.get({ depth: 2, locale: "fr" }),
-  });
-
-  const {
-    data: FooterData,
-    isLoading: isFooterLoading,
-    error: footerError,
-  } = useQuery({
-    queryKey: ["footer"],
-    queryFn: () => footerQuery.get({ depth: 2, locale: "fr" }),
-  });
-
-  if (isLoading || isFaqLoading || isAboutLoading || isCtaLoading || isFooterLoading) {
+  if (isLoading) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
         Loading...
@@ -59,8 +20,8 @@ export default function Home() {
     );
   }
 
-  if (error || faqError || aboutError || ctaError || footerError) {
-    return <FetchError error={error || faqError || aboutError || ctaError || footerError} />;
+  if (error) {
+    return <FetchError error={error} />;
   }
 
   return (
@@ -144,27 +105,36 @@ export default function Home() {
             <JsonViewer json={data} />
           </div>
         )}
-        {faqData && (
-          <div className="flex flex-col m-4 gap-4 text-base font-medium sm:flex-row">
-            <JsonViewer json={faqData} />
-          </div>
-        )}
-        {AboutData && (
-          <div className="flex flex-col m-4 gap-4 text-base font-medium sm:flex-row">
-            <JsonViewer json={AboutData} />
-          </div>
-        )}
-        {CtaData && (
-          <div className="flex flex-col m-4 gap-4 text-base font-medium sm:flex-row">
-            <JsonViewer json={CtaData} />
-          </div>
-        )}
-        {FooterData && (
-          <div className="flex flex-col m-4 gap-4 text-base font-medium sm:flex-row">
-            <JsonViewer json={FooterData} />
-          </div>
-        )}  
-
+        {[
+          {
+            name: "about",
+            link: "/about",
+          },
+          {
+            name: "blog",
+            link: "/blog",
+          },
+          {
+            name: "career",
+            link: "/career",
+          },
+          {
+            name: "faq",
+            link: "/faq",
+          },
+          {
+            name: "sector",
+            link: "/sector",
+          },
+          {
+            name: "service",
+            link: "/service",
+          },
+        ].map((item) => (
+          <Link key={item.name} href={item.link}>
+            {item.name}
+          </Link>
+        ))}
       </main>
     </div>
   );

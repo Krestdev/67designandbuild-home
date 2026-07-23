@@ -3,7 +3,7 @@ import { Career } from "./type";
 
 class CareerListQuery extends BaseQuery<Career, Career> {
   constructor() {
-    super("/careers");
+    super("/career");
   }
 }
 
