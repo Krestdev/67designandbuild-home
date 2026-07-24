@@ -1,4 +1,8 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter-tight);
+}
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 

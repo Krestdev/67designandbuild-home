@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 const Page = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["blogListQuery"],
-    queryFn: () => blogListQuery.getBlobal(),
+    queryFn: () => blogListQuery.get(),
   });
 
   if (isLoading) {

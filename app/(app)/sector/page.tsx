@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 const Page = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["sectorQuery"],
-    queryFn: () => sectorQuery.get(),
+    queryFn: () => sectorQuery.getBlobal(),
   });
   const {
     data: data2,
@@ -16,7 +16,7 @@ const Page = () => {
     error: error2,
   } = useQuery({
     queryKey: ["sectorListQuery"],
-    queryFn: () => sectorListQuery.getBlobal(),
+    queryFn: () => sectorListQuery.get(),
   });
 
   if (isLoading || isLoading2) {

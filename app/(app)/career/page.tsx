@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 const Page = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["careerListQuery"],
-    queryFn: () => careerListQuery.getBlobal(),
+    queryFn: () => careerListQuery.get(),
   });
 
   if (isLoading) {

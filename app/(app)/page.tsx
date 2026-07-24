@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Home() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["todos"],
-    queryFn: () => homeQuery.get({ depth: 2, locale: "fr" }),
+    queryFn: () => homeQuery.getBlobal({ depth: 2, locale: "fr" }),
   });
 
   if (isLoading) {
