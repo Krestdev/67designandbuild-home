@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { homeQuery } from "@/hooks/home/homeQuery";
 import FetchError from "@/components/errors";
+import { PartnerLogos } from "@/components/PartnerLogos";
+import { Intro } from "@/components/Intro";
+
 
 const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
 
@@ -61,6 +64,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+       <PartnerLogos />
+       <Intro />
 
       {/* rest of the homepage sections come next, once Header/Footer are confirmed */}
       <div className="h-[1000px] bg-white p-8">

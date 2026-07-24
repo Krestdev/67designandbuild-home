@@ -1,3 +1,5 @@
+import type { SerializedEditorState } from "lexical";
+
 export interface Media {
   id: number;
   url: string;
@@ -28,6 +30,4 @@ export interface Media {
   updatedAt: string;
 }
 
-export interface RichText {
-  [key: string]: unknown;
-}
+export type RichText = SerializedEditorState;

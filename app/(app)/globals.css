@@ -3,6 +3,16 @@
 @theme {
   --font-sans: var(--font-inter-tight);
 }
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
