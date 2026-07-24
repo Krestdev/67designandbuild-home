@@ -53,27 +53,29 @@ export function Intro() {
     offset: ["start 0.9", "start 0.25"],
   });
 
-  if (isLoading || error || !data || !data.content) return null;
-
-  const text = getPlainTextFromRichText(data.content);
-  const words = text.split(" ");
+  const words =
+    !isLoading && !error && data?.content
+      ? getPlainTextFromRichText(data.content).split(" ")
+      : [];
 
   return (
     <section
       ref={sectionRef}
       className="max-w-3xl mx-auto text-center px-6 md:px-8 py-16 md:py-24"
     >
-      <p className="text-sm md:text-base leading-relaxed">
-        {words.map((word, i) => (
-          <Word
-            key={i}
-            word={word}
-            index={i}
-            total={words.length}
-            progress={scrollYProgress}
-          />
-        ))}
-      </p>
+      {words.length > 0 && (
+        <p className="text-sm md:text-base leading-relaxed">
+          {words.map((word, i) => (
+            <Word
+              key={i}
+              word={word}
+              index={i}
+              total={words.length}
+              progress={scrollYProgress}
+            />
+          ))}
+        </p>
+      )}
     </section>
   );
 }

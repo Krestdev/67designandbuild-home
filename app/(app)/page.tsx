@@ -6,6 +6,7 @@ import { homeQuery } from "@/hooks/home/homeQuery";
 import FetchError from "@/components/errors";
 import { PartnerLogos } from "@/components/PartnerLogos";
 import { Intro } from "@/components/Intro";
+import { Trades } from "@/components/Trades";
 
 
 const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
@@ -66,6 +67,7 @@ export default function Home() {
       </section>
        <PartnerLogos />
        <Intro />
+        <Trades />
 
       {/* rest of the homepage sections come next, once Header/Footer are confirmed */}
       <div className="h-[1000px] bg-white p-8">
