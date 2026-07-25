@@ -1,4 +1,5 @@
-import { Media, RichText } from "../type";
+import type { Media, RichText } from "../type";
+import type { Sector } from "../sector/type";
 
 export interface CatalogPageGlobal {
   id: number;
@@ -13,7 +14,8 @@ export interface Catalog {
   title?: string | null;
   slug?: string | null;
   content?: RichText | null;
-  preveiw?: Media | number | null; // Note: 'preveiw' is spelled this way in the collection schema
+  preveiw?: Media | number | null;
+  category?: Sector | number | null;
   createdAt: string;
   updatedAt: string;
 }
