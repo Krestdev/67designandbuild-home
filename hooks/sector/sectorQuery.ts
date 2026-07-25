@@ -3,7 +3,7 @@ import { SectorPageGlobal } from "./type";
 
 class SectorQuery extends BaseQuery<SectorPageGlobal, SectorPageGlobal> {
   constructor() {
-    super("/globals/sector");
+    super("/globals/Sector");
   }
 }
 
