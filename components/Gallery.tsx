@@ -46,7 +46,7 @@ export function Gallery() {
         {intro?.intro}
       </p>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-1 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-1 max-w-5xl mx-auto">
         {items.map((item) => {
           const imageUrl =
             item.preveiw && typeof item.preveiw === "object"
@@ -70,6 +70,7 @@ export function Gallery() {
                 src={imageUrl}
                 alt={item.title ?? ""}
                 fill
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover"
               />
               <div
