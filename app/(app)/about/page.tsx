@@ -27,6 +27,11 @@ export default function AboutPage() {
       ? data.hero.backgroundImage.alt ?? ""
       : "";
 
+  const directionPhoto =
+    data.direction?.person?.photo && typeof data.direction.person.photo === "object"
+      ? data.direction.person.photo.url
+      : null;
+
   return (
     <div>
       {/* ---- HERO ---- */}
@@ -86,6 +91,49 @@ export default function AboutPage() {
       </section>
 
       <PartnerLogos />
+
+      {/* ---- DIRECTION ---- */}
+      <section className="bg-[#212121] py-16 md:py-24">
+        <Container>
+          <div className="flex flex-col gap-12">
+            <div>
+              <h2 className="font-semibold text-4xl md:text-5xl leading-[1.1] tracking-[-0.025em] text-white max-w-[640px] mb-4">
+                {data.direction?.title}
+              </h2>
+              <p className="text-base leading-[1.5] text-[#AFAFAF] max-w-[640px]">
+                {data.direction?.subtitle}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_464px] gap-12">
+              <div className="flex flex-col gap-2 order-2 md:order-1">
+                <h3 className="font-bold text-2xl leading-[1.5] text-white">
+                  {data.direction?.person?.name}
+                </h3>
+                <p className="font-medium text-sm leading-[1.5] text-[#D97B2C] mb-4">
+                  {data.direction?.person?.role}
+                </p>
+                <div className="text-base leading-[1.5] text-white space-y-4">
+                  {data.direction?.person?.bio && (
+                    <RichText data={data.direction.person.bio} />
+                  )}
+                </div>
+              </div>
+
+              {directionPhoto && (
+                <div className="relative w-full aspect-square md:w-[464px] md:h-[464px] order-1 md:order-2 overflow-hidden">
+                  <Image
+                    src={directionPhoto}
+                    alt={data.direction?.person?.name ?? ""}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </Container>
+      </section>
     </div>
   );
 }
