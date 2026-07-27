@@ -6,6 +6,7 @@ import { aboutQuery } from "@/hooks/about/aboutQuery";
 import type { AboutGlobal } from "@/hooks/about/type";
 import { Container } from "@/components/Container";
 import { PartnerLogos } from "@/components/PartnerLogos";
+import { CtaBanner } from "@/components/CtaBanner";
 
 const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
 
@@ -134,6 +135,71 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+      {/* ---- STEPS ---- */}
+<section className="bg-[#FBF3EA] py-16 md:py-[120px]">
+  <Container>
+    <div className="flex flex-col gap-12">
+      <div>
+        <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#212121] max-w-[640px] mb-4">
+          {data.steps?.title}
+        </h2>
+        <p className="text-sm md:text-base leading-[1.5] text-[#333333] md:text-[#5B5B5B] max-w-[640px]">
+          {data.steps?.subtitle}
+        </p>
+      </div>
+
+      <div className="flex flex-col divide-y divide-[#21212114]">
+  {data.steps?.items?.map((step, index) => (
+    <div key={step.id} className="flex gap-6 md:gap-10 py-6 first:pt-0 last:pb-0">
+      <span className="font-medium text-[32px] leading-[1.1] text-[#AFAFAF] w-8 shrink-0">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <div className="flex flex-col gap-1">
+        <h3 className="font-medium text-lg leading-[1.1] text-[#212121]">
+          {step.title}
+        </h3>
+        <p className="text-sm leading-[1.5] text-[#333333]">
+          {step.description}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+    </div>
+  </Container>
+</section>
+{/* ---- GUARANTEES ---- */}
+<section className="bg-white py-16 md:py-[120px]">
+  <Container>
+    <div className="flex flex-col items-center text-center gap-4 mb-12">
+      <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#212121] max-w-[640px]">
+        {data.guarantees?.title}
+      </h2>
+      <p className="text-sm md:text-base leading-[1.5] text-[#5B5B5B] max-w-[640px]">
+        {data.guarantees?.subtitle}
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-4 border border-[#999999] divide-y md:divide-y-0 md:divide-x divide-[#999999]">
+      {data.guarantees?.items?.map((item, index) => (
+        <div key={item.id} className="flex flex-col gap-5 pt-4 pb-4 pr-3 pl-3">
+          <span className="font-medium text-sm leading-[1.1] text-[#AFAFAF]">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-semibold text-lg leading-[1.1] text-[#212121]">
+              {item.title}
+            </h3>
+            <p className="text-sm leading-[1.5] text-[#333333]">
+              {item.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+<CtaBanner />
     </div>
   );
 }
