@@ -1,11 +1,12 @@
 "use client";
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { RichText } from "@payloadcms/richtext-lexical/react";
-import { ChevronDown } from "lucide-react";
 import { faqQuery } from "@/hooks/faq/faqQuery";
 import { faqListQuery } from "@/hooks/faq/faqListQuery";
 import type { FaqPageGlobal, Faq as FaqEntry } from "@/hooks/faq/type";
+import { Container } from "@/components/Container";
 
 const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
 
@@ -40,34 +41,54 @@ export function Faq() {
   if (!items || items.length === 0) return null;
 
   return (
-    <section className="max-w-2xl mx-auto px-6 md:px-8 py-16 md:py-24 text-center">
-      <h2 className="text-2xl md:text-3xl font-bold mb-10">{intro?.title}</h2>
+    <section className="py-16 md:py-24 bg-[#FAF6EF]">
+      <Container>
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-6xl font-semibold tracking-tight text-center mb-14">
+            {intro?.title}
+          </h2>
 
-      <div className="text-left divide-y divide-[#1c1c1c]/10 border-t border-b border-[#1c1c1c]/10">
-        {items.map((item) => {
-          const isOpen = openId === item.id;
-          return (
-            <div key={item.id}>
-              <button
-                onClick={() => setOpenId(isOpen ? null : item.id)}
-                className="w-full flex items-center justify-between gap-4 py-5 text-left"
-              >
-                <span className="font-medium">{item.question}</span>
-                <ChevronDown
-                  className={`w-4 h-4 flex-shrink-0 transition-transform ${
-                    isOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {isOpen && (
-                <div className="pb-5 text-sm text-[#1c1c1c]/70">
-                  <RichText data={item.answer} />
+          <div className="border-t border-[#212121]/10">
+            {items.map((item) => {
+              const isOpen = openId === item.id;
+
+              return (
+                <div
+                  key={item.id}
+                  className="border-b border-[#212121]/10"
+                >
+                  <button
+                    onClick={() =>
+                      setOpenId(isOpen ? null : item.id)
+                    }
+                    className="w-full flex items-start justify-between gap-6 py-6 text-left transition-colors duration-300"
+                  >
+                    <span className="text-xl md:text-2xl font-medium leading-snug">
+                      {item.question}
+                    </span>
+
+                    <span className="flex-shrink-0 text-4xl font-light leading-none">
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isOpen
+                        ? "max-h-96 opacity-100 pb-6"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="pr-12 text-base leading-8 text-[#212121]/70">
+                      <RichText data={item.answer} />
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </div>
+      </Container>
     </section>
   );
 }
