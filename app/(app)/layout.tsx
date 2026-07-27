@@ -27,18 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn(
-        "h-full",
-        "antialiased",
-        interTight.variable,
-        inter.variable,
-      )}
-    >
+    <html lang="en" className={cn(interTight.variable)}>
       <QueryProvider>
         <body className="min-h-full flex flex-col font-sans">
-           <Header />
+          <Header />
           <main className="flex-1">{children}</main>
           <Footer />
         </body>
