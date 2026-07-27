@@ -6,9 +6,6 @@ import { footerQuery } from "@/hooks/footer/footerQuery";
 
 const LOCALE = "fr"; // TODO: wire to real locale routing
 
-type FooterLinkItem = { id: string; lable: string };
-type SocialLink = { id: string; platform: string; url: string | null };
-
 const socialIcons: Record<
   string,
   React.ComponentType<{ className?: string }>
@@ -63,7 +60,7 @@ export function Footer() {
                 <a
                   key={s.id}
                   href={s.url ?? undefined}
-                  aria-label={s.platform}
+                  aria-label={s.platform ?? undefined}
                   className="text-white hover:text-white transition"
                 >
                   <Icon className="w-4 h-4" />
