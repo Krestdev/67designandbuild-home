@@ -10,6 +10,7 @@ export const Sector: CollectionConfig = {
     { name: "title", type: "text", localized: true },
     { name: "slug", type: "text" },
     { name: "image", type: "upload", relationTo: "media" },
+    { name: "description", type: "textarea", localized: true },
     { name: "content", type: "richText", localized: true },
   ],
 };

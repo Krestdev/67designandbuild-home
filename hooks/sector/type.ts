@@ -14,6 +14,7 @@ export interface Sector {
   title?: string | null;
   slug?: string | null;
   image?: Media | number | null;
+  description?: string | null;
   content?: RichText | null;
   createdAt: string;
   updatedAt: string;
