@@ -5,6 +5,7 @@ import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 import { aboutQuery } from "@/hooks/about/aboutQuery";
 import type { AboutGlobal } from "@/hooks/about/type";
 import { getPlainTextFromRichText } from "@/lib/getPlainTextFromRichText";
+import { Container } from "./Container";
 
 const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
 
@@ -25,12 +26,11 @@ function Word({
   const start = index / total;
   const end = (index + 1) / total;
   const color = useTransform(progress, [start, end], [GREY, DARK]);
-  const fontWeight = useTransform(progress, [start, end], [400, 600]);
 
   return (
     <motion.span
-      style={{ color, fontWeight }}
-      className="mr-[0.3em] inline-block"
+      style={{ color }}
+      className="mr-[0.3em] inline-block font-semibold"
     >
       {word}
     </motion.span>
@@ -59,23 +59,24 @@ export function Intro() {
       : [];
 
   return (
-    <section
-      ref={sectionRef}
-      className="max-w-3xl mx-auto text-center px-6 md:px-8 py-16 md:py-24"
-    >
-      {words.length > 0 && (
-        <p className="text-sm md:text-base leading-relaxed">
-          {words.map((word, i) => (
-            <Word
-              key={i}
-              word={word}
-              index={i}
-              total={words.length}
-              progress={scrollYProgress}
-            />
-          ))}
-        </p>
-      )}
+    <section ref={sectionRef} className="py-16 md:py-24">
+      <Container>
+        <div className="max-w-5xl mx-auto text-center">
+          {words.length > 0 && (
+            <p className="text-2xl leading-[1.5] tracking-[-0.025em]">
+              {words.map((word, i) => (
+                <Word
+                  key={i}
+                  word={word}
+                  index={i}
+                  total={words.length}
+                  progress={scrollYProgress}
+                />
+              ))}
+            </p>
+          )}
+        </div>
+      </Container>
     </section>
   );
 }

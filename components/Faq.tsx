@@ -43,50 +43,48 @@ export function Faq() {
   return (
     <section className="py-16 md:py-24 bg-[#FAF6EF]">
       <Container>
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-semibold tracking-tight text-center mb-14">
-            {intro?.title}
-          </h2>
+        <h2 className="font-semibold text-5xl leading-[1.1] tracking-[-0.025em] text-[#212121] text-center mb-14 max-w-[640px] mx-auto">
+          {intro?.title}
+        </h2>
 
-          <div className="border-t border-[#212121]/10">
-            {items.map((item) => {
-              const isOpen = openId === item.id;
+        <div className="max-w-[1024px] mx-auto border-t border-white/30">
+          {items.map((item) => {
+            const isOpen = openId === item.id;
 
-              return (
-                <div
-                  key={item.id}
-                  className="border-b border-[#212121]/10"
+            return (
+              <div key={item.id} className="border-b border-white/30">
+                <button
+                  onClick={() => setOpenId(isOpen ? null : item.id)}
+                  className="w-full flex flex-col gap-1.5 p-4 text-left transition-colors duration-300"
                 >
-                  <button
-                    onClick={() =>
-                      setOpenId(isOpen ? null : item.id)
-                    }
-                    className="w-full flex items-start justify-between gap-6 py-6 text-left transition-colors duration-300"
-                  >
-                    <span className="text-xl md:text-2xl font-medium leading-snug">
+                  <div className="flex items-start justify-between gap-6">
+                    <span className="text-2xl leading-[1.5] font-medium text-[#212121]">
                       {item.question}
                     </span>
 
-                    <span className="flex-shrink-0 text-4xl font-light leading-none">
-                      {isOpen ? "−" : "+"}
+                    <span className="relative w-[18px] h-[18px] flex-shrink-0 mt-2">
+                      <span className="absolute top-1/2 left-0 w-full h-[1.5px] -translate-y-1/2 bg-[#212121]" />
+                      <span
+                        className={`absolute top-1/2 left-0 w-full h-[1.5px] -translate-y-1/2 bg-[#212121] transition-transform duration-300 ${
+                          isOpen ? "rotate-0" : "rotate-90"
+                        }`}
+                      />
                     </span>
-                  </button>
+                  </div>
 
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      isOpen
-                        ? "max-h-96 opacity-100 pb-6"
-                        : "max-h-0 opacity-0"
+                      isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
                     <div className="pr-12 text-base leading-8 text-[#212121]/70">
                       <RichText data={item.answer} />
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                </button>
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>

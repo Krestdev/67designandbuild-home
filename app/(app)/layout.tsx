@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn(interTight.variable)}>
       <QueryProvider>
-        <body className="min-h-full flex flex-col font-sans">
+        <body className="min-h-full flex flex-col font-sans bg-[#FBF3EA]">
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

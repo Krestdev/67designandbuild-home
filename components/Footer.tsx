@@ -71,15 +71,16 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="flex justify-center mb-8">
-        <Image
-          src="/logofooter.png"
-          alt="67 Design & Build"
-          width={480}
-          height={100}
-          className="w-auto h-14 md:h-20"
-        />
-      </div>
+     <div className="flex justify-center">
+  <Image
+    src="/logofooter.png"
+    alt="67 Design & Build"
+    width={1232}
+    height={253}
+    sizes="(max-width: 768px) 100vw, 1232px"
+    className="w-full h-auto"
+  />
+</div>
 
       <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:justify-between text-left text-xs text-white/50 max-w-6xl mx-auto">
   <span className="font-[family-name:var(--font-inter)]" >
