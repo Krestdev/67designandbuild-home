@@ -7,6 +7,8 @@ import { Faq } from "./faq.global";
 import { Catalog } from "./catalog.global";
 import { Sector } from "./sector.global";
 import { Service } from "./service.global";
+import { Contact } from "./contact.global";
+
 export const globals = [
   About,
   Home,
@@ -16,5 +18,6 @@ export const globals = [
   Faq,
   Service,
   Sector,
-  Catalog
+  Catalog,
+  Contact
 ];
