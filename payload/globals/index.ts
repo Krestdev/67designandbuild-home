@@ -9,6 +9,7 @@ import { Sector } from "./sector.global";
 import { Service } from "./service.global";
 import { Contact } from "./contact.global";
 import { CareerGlobal } from "./career.global";
+import { ActualitesGlobal } from "./actualites.global";
 
 export const globals = [
   About,
@@ -21,5 +22,6 @@ export const globals = [
   Sector,
   Catalog,
   Contact,
-  CareerGlobal
+  CareerGlobal,
+  ActualitesGlobal,
 ];

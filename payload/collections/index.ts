@@ -6,6 +6,8 @@ import { Catalog } from "./catalog.collection";
 import { Blog } from "./blog.collection";
 import { Career } from "./career.collection";
 import { Partners } from "./partners.collection";
+import { Category } from "./category.collection";
+import { Article } from "./article.collection";
 export const collections = [
   Service,
   Media,
@@ -15,4 +17,6 @@ export const collections = [
   Career,
   Partners,
   Faq,
+  Category,
+  Article,
 ];
