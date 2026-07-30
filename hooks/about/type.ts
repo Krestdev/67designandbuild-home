@@ -22,8 +22,8 @@ interface GuaranteeItem {
 
 interface Media {
   id: number;
-  url?: string | null;
-  alt?: string | null;
+  url: string;
+  alt?: string;
 }
 
 export interface AboutGlobal {

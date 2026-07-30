@@ -25,18 +25,9 @@ export default function AboutPage() {
 
   if (isLoading || error || !data) return null;
 
-  const heroImage =
-    data.hero?.backgroundImage && typeof data.hero.backgroundImage === "object"
-      ? data.hero.backgroundImage.url
-      : null;
-
-  const heroImageAlt =
-    data.hero?.backgroundImage && typeof data.hero.backgroundImage === "object"
-      ? data.hero.backgroundImage.alt ?? ""
-      : "";
-
   const directionPhoto =
-    data.direction?.person?.photo && typeof data.direction.person.photo === "object"
+    data.direction?.person?.photo &&
+    typeof data.direction.person.photo === "object"
       ? data.direction.person.photo.url
       : null;
 
@@ -44,15 +35,16 @@ export default function AboutPage() {
     <div>
       {/* ---- HERO ---- */}
       <section className="relative">
-        {heroImage && (
-          <Image
-            src={heroImage}
-            alt={heroImageAlt}
-            fill
-            priority
-            className="object-cover -z-10"
-          />
-        )}
+        {data.hero?.backgroundImage &&
+          typeof data.hero?.backgroundImage !== "number" && (
+            <Image
+              src={data.hero?.backgroundImage?.url}
+              alt={data.hero?.backgroundImage?.alt ?? ""}
+              fill
+              priority
+              className="object-cover -z-10"
+            />
+          )}
         <div className="absolute inset-0 bg-black/30 -z-10" />
 
         <div className="relative flex flex-col justify-end items-center py-24 md:py-[120px]">
@@ -122,10 +114,10 @@ export default function AboutPage() {
                   {data.direction?.person?.role}
                 </p>
                 <div className="text-base leading-[1.5] text-white [&_p+p]:mt-4">
-  {data.direction?.person?.bio && (
-    <RichText data={data.direction.person.bio} />
-  )}
-</div>
+                  {data.direction?.person?.bio && (
+                    <RichText data={data.direction.person.bio} />
+                  )}
+                </div>
               </div>
 
               {directionPhoto && (

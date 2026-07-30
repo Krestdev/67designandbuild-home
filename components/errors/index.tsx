@@ -5,9 +5,15 @@ import { MaintenanceError } from "@/components/errors/maintenance-error";
 import { GeneralError } from "@/components/errors/general-error";
 import { BadRequest } from "@/components/errors/badRequest";
 
-function FetchError({ error }: { error: Error | null }) {
+function FetchError({
+  error,
+  data,
+}: {
+  error: Error | null;
+  data?: boolean | null;
+}) {
   if (error instanceof AxiosError) {
-    if (error.response?.status === 404) {
+    if (error.response?.status === 404 || data) {
       return <NotFoundError />;
     }
     if (error.response?.status === 500) {

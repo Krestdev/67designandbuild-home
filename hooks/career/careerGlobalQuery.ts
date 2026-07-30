@@ -8,3 +8,4 @@ class CareerGlobalQuery extends BaseQuery<CareerGlobal, CareerGlobal> {
 }
 
 export const careerGlobalQuery = new CareerGlobalQuery();
+n
