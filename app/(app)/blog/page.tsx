@@ -48,7 +48,7 @@ function ArticleCard({
 }
 
 export default function ActualitesPage() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const { data: intro, isLoading: introLoading, error: introError } = useQuery<ActualitesGlobal>({
     queryKey: ["actualites-global", locale],
@@ -111,7 +111,7 @@ export default function ActualitesPage() {
           {featured.length > 0 && (
             <div className="mb-16">
               <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#212121] mb-6">
-                En vedette
+                {t("featured")}
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
                 {featured[0] && (
@@ -130,7 +130,7 @@ export default function ActualitesPage() {
           {latest.length > 0 && (
             <div className="mb-16">
               <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#212121] mb-6">
-                Derniers articles
+                {t("latestArticles")}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {latest.map((article) => (

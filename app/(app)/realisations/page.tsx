@@ -18,7 +18,7 @@ function RealisationsContainer({ children }: { children: React.ReactNode }) {
 
 export default function RealisationsPage() {
   const [activeFilter, setActiveFilter] = useState<number | "all">("all");
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const { data: intro, isLoading: introLoading, error: introError } = useQuery<RealisationsGlobal>({
     queryKey: ["realisations-global", locale],
@@ -99,7 +99,7 @@ export default function RealisationsPage() {
           {/* ---- FILTER BAR ---- */}
           <div className="mb-6 sm:mb-8">
             <p className="text-base sm:text-[18px] font-semibold leading-[1.5] text-[#212121] mb-3">
-              Filtrer par type
+              {t("filterByType")}
             </p>
             <div className="flex flex-wrap gap-2 sm:gap-3">
               <button
@@ -110,7 +110,7 @@ export default function RealisationsPage() {
                     : "bg-[#FFF0DF] text-[#1A1A1A] border border-[#EDD3B7]"
                 }`}
               >
-                Tous
+                {t("all")}
               </button>
               {availableSectors.map((sector) => (
                 <button

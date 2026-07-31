@@ -12,7 +12,7 @@ import { useLocale } from "@/providers/localeProvider";
 
 export function Gallery() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const {
     data: intro,
@@ -106,7 +106,7 @@ export function Gallery() {
             href="/realisations"
             className="inline-block mt-8 text-sm underline"
           >
-            Tout voir
+            {t("seeAll")}
           </Link>
         </div>
       </Container>

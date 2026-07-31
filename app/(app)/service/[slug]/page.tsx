@@ -61,7 +61,7 @@ export default function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const {
     data: services,
@@ -109,7 +109,7 @@ export default function ServicePage({
           <ServiceContainer>
             <div className="flex flex-col gap-3 items-center text-center max-w-[720px] mx-auto">
               <p className="text-base leading-[1.5] text-[#FFF0DF]">
-                Nos Services
+                {t("ourServicesEyebrow")}
               </p>
               <h1 className="font-semibold text-4xl md:text-[60px] leading-[1.1] tracking-[-0.025em] text-white">
                 {service.title}
@@ -132,7 +132,7 @@ export default function ServicePage({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
             <div className="flex flex-col gap-6 px-3 py-4">
               <h2 className="font-medium text-2xl leading-[1.1] text-[#212121]">
-                Domaines d&rsquo;application
+                {t("applicationAreas")}
               </h2>
               <ul className="flex flex-col gap-1.5">
                 {service.applicationAreas?.map((area, i) => (
@@ -153,7 +153,7 @@ export default function ServicePage({
 
             <div className="flex flex-col gap-6 px-3 py-4">
               <h2 className="font-medium text-2xl leading-[1.1] text-[#212121]">
-                Livrables
+                {t("deliverables")}
               </h2>
               <ul className="flex flex-col gap-1.5">
                 {service.deliverables?.map((item, i) => (
@@ -180,7 +180,7 @@ export default function ServicePage({
         <section className="py-16 md:py-[120px]">
           <ServiceContainer>
             <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#212121] text-center max-w-[640px] mx-auto mb-12">
-              Projets associés
+              {t("relatedProjects")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

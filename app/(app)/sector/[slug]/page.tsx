@@ -56,14 +56,16 @@ function RelatedProjectCard({
 
 function AssociatedServicesList({
   services,
+  label,
 }: {
   services: Sector["associatedServices"];
+  label: string;
 }) {
   if (!services || services.length === 0) return null;
   return (
     <div className="flex flex-col gap-4">
       <h2 className="font-semibold text-[32px] leading-[1.1] text-[#212121]">
-        Services associés
+        {label}
       </h2>
       <ul className="flex flex-col gap-2">
         {services.map((service, i) => {
@@ -93,7 +95,7 @@ export default function SectorPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const {
     data: sectors,
@@ -138,7 +140,7 @@ export default function SectorPage({
         <SectorContainer>
           <div className="flex flex-col gap-2 items-center text-center">
             <p className="font-semibold text-base leading-[1.5] text-[#FFF0DF]">
-              Secteur d&rsquo;Activité
+              {t("sectorEyebrow")}
             </p>
             <h1 className="font-semibold text-4xl md:text-[48px] leading-[1.1] tracking-[-0.025em] text-white">
               {sector.title}
@@ -158,7 +160,10 @@ export default function SectorPage({
             // Exact Figma layout: Services associés + 3 images in a 2x2
             // grid, each image with its own confirmed aspect ratio.
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <AssociatedServicesList services={associatedServices} />
+              <AssociatedServicesList
+                services={associatedServices}
+                label={t("associatedServices")}
+              />
 
               {[
                 { ratio: "aspect-[16/9]" },
@@ -190,7 +195,10 @@ export default function SectorPage({
           ) : (
             // Fallback for any other photo count — uniform wrapping grid.
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <AssociatedServicesList services={associatedServices} />
+              <AssociatedServicesList
+                services={associatedServices}
+                label={t("associatedServices")}
+              />
 
               {galleryPhotos.length > 0 && (
                 <div className="grid grid-cols-2 gap-3">
@@ -227,7 +235,7 @@ export default function SectorPage({
         <section className="bg-[#FBF3EA] pb-16 md:pb-[120px]">
           <SectorContainer>
             <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#212121] text-center max-w-[640px] mx-auto mb-12">
-              Projets associés
+              {t("relatedProjects")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

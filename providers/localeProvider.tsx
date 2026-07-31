@@ -9,6 +9,7 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
+import { messages, type MessageKey } from "./messages";
 
 export type Locale = "fr" | "en" | "it";
 
@@ -25,6 +26,7 @@ const STORAGE_KEY = "locale";
 type LocaleContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
+  t: (key: MessageKey) => string;
 };
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -56,7 +58,15 @@ export function LocaleProvider({ children }: PropsWithChildren) {
     window.localStorage.setItem(STORAGE_KEY, next);
   }, []);
 
-  const value = useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
+  const t = useCallback(
+    (key: MessageKey) => messages[locale][key],
+    [locale],
+  );
+
+  const value = useMemo(
+    () => ({ locale, setLocale, t }),
+    [locale, setLocale, t],
+  );
 
   return (
     <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>

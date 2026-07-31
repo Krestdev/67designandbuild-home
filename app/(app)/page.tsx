@@ -15,7 +15,7 @@ import { Container } from "@/components/Container";
 import { useLocale } from "@/providers/localeProvider";
 
 export default function Home() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const { data, isLoading, error } = useQuery({
     queryKey: ["home", locale],
     queryFn: () => homeQuery.getBlobal({ depth: 2, locale }),
@@ -24,7 +24,7 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading...
+        {t("loading")}
       </div>
     );
   }

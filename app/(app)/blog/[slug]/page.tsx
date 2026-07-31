@@ -47,7 +47,7 @@ export default function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const {
     data: articleMatches,
@@ -124,7 +124,7 @@ export default function ArticlePage({
             {similarArticles.length > 0 && (
               <div>
                 <h2 className="font-bold text-2xl leading-[1.1] text-[#212121] mb-6">
-                  Articles similaires
+                  {t("similarArticles")}
                 </h2>
                 <div className="flex flex-col gap-6 mb-6">
                   {similarArticles.map((a) => (
@@ -135,7 +135,7 @@ export default function ArticlePage({
                   href="/actualites"
                   className="inline-flex items-center bg-[#212121] text-white px-4 py-2 text-sm font-medium"
                 >
-                  Voir plus
+                  {t("seeMore")}
                 </Link>
               </div>
             )}

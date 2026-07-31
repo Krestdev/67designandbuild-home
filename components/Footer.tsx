@@ -16,7 +16,7 @@ const socialIcons: Record<
 };
 
 export function Footer() {
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const { data, isLoading, error } = useQuery({
     queryKey: ["footer", locale],
     queryFn: () => footerQuery.getBlobal({ locale }),
@@ -29,7 +29,7 @@ export function Footer() {
       <Container>
         <div className="flex flex-col gap-10 md:flex-row md:justify-end md:gap-20 mb-16 md:mb-24 text-sm">
           <div>
-            <h4 className="font-semibold mb-4">Entreprise</h4>
+            <h4 className="font-semibold mb-4">{t("footerCompany")}</h4>
             <ul className="space-y-3 text-white/70">
               {data.Enterprise?.map((item) => (
                 <li key={item.id}>{item.lable}</li>
@@ -38,7 +38,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Liens utiles</h4>
+            <h4 className="font-semibold mb-4">{t("footerLinks")}</h4>
             <ul className="space-y-3 text-white/70">
               {data.usefullLinks?.map((item) => (
                 <li key={item.id}>{item.lable}</li>
@@ -47,7 +47,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Contact</h4>
+            <h4 className="font-semibold mb-4">{t("footerContact")}</h4>
             <ul className="space-y-3 text-white/70">
               <li>{data.contactInfo?.contactEmail}</li>
               <li>{data.contactInfo?.contactPhone}</li>

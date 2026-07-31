@@ -7,31 +7,32 @@ import { careerListQuery } from "@/hooks/career/careerListQuery";
 import type { CareerGlobal, Career, CareerProfile } from "@/hooks/career/type";
 import { ArrowUpRight } from "lucide-react";
 import { useLocale } from "@/providers/localeProvider";
+import type { MessageKey } from "@/providers/messages";
 
 function CareerContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
 }
 
-const FILTERS: { label: string; value: CareerProfile | "all" }[] = [
-  { label: "Tous les profils", value: "all" },
-  { label: "Chantier & production", value: "chantier-production" },
-  { label: "Bureau d'études", value: "bureau-etudes" },
+const FILTER_KEYS: { key: MessageKey; value: CareerProfile | "all" }[] = [
+  { key: "filterAllProfiles", value: "all" },
+  { key: "filterChantier", value: "chantier-production" },
+  { key: "filterBureau", value: "bureau-etudes" },
 ];
 
-const PROFILE_LABELS: Record<CareerProfile, string> = {
-  "chantier-production": "Chantier & Production",
-  "bureau-etudes": "Bureau d'études",
+const PROFILE_KEYS: Record<CareerProfile, MessageKey> = {
+  "chantier-production": "profileChantier",
+  "bureau-etudes": "profileBureau",
 };
 
-const CONTRACT_LABELS: Record<string, string> = {
-  cdi: "CDI",
-  cdd: "CDD",
-  stage: "Stage",
+const CONTRACT_KEYS: Record<string, MessageKey> = {
+  cdi: "contractCdi",
+  cdd: "contractCdd",
+  stage: "contractStage",
 };
 
 export default function CareerPage() {
   const [filter, setFilter] = useState<CareerProfile | "all">("all");
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const {
     data: intro,
@@ -102,7 +103,7 @@ export default function CareerPage() {
 
           {/* Filter tabs */}
           <div className="flex flex-wrap gap-3 mb-8">
-            {FILTERS.map((f) => (
+            {FILTER_KEYS.map((f) => (
               <button
                 key={f.value}
                 onClick={() => setFilter(f.value)}
@@ -112,7 +113,7 @@ export default function CareerPage() {
                     : "bg-[#FFF0DF] text-[#212121] border border-[#EDD3B7]"
                 }`}
               >
-                {f.label}
+                {t(f.key)}
               </button>
             ))}
           </div>
@@ -129,8 +130,10 @@ export default function CareerPage() {
                       {job.title}
                     </h3>
                     <p className="text-sm text-[#5B5B5B]">
-                      {job.profile && PROFILE_LABELS[job.profile]} •{" "}
-                      {job.contractType && CONTRACT_LABELS[job.contractType]} •{" "}
+                      {job.profile && t(PROFILE_KEYS[job.profile])} •{" "}
+                      {job.contractType && CONTRACT_KEYS[job.contractType]
+                        ? t(CONTRACT_KEYS[job.contractType])
+                        : job.contractType} •{" "}
                       {job.location}
                     </p>
                   </div>
@@ -138,7 +141,7 @@ export default function CareerPage() {
                     href={`/career/${job.slug ?? ""}`}
                     className="shrink-0 inline-flex items-center gap-1 border border-[#212121] px-4 py-2 text-sm font-medium text-[#212121] hover:bg-[#212121] hover:text-white transition-colors"
                   >
-                    Postuler <ArrowUpRight className="w-4 h-4" />
+                    {t("apply")} <ArrowUpRight className="w-4 h-4" />
                   </a>
                 </div>
               ))}

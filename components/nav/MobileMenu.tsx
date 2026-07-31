@@ -24,7 +24,7 @@ export function MobileMenu({
   onClose: () => void;
   data: NavbarGlobal;
 }) {
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const [expanded, setExpanded] = useState<AccordionKey>(null);
   const [prevOpen, setPrevOpen] = useState(open);
 
@@ -70,7 +70,7 @@ export function MobileMenu({
     <div className="fixed inset-0 z-[60] flex flex-col bg-[#212121] md:hidden">
       <div className="flex items-center justify-between px-6 py-4">
         <span className="text-base font-semibold uppercase tracking-wide text-white">
-          Menu
+          {t("menu")}
         </span>
         <button aria-label="Close menu" onClick={onClose} className="text-white">
           <X className="h-6 w-6" />
@@ -79,7 +79,7 @@ export function MobileMenu({
 
       <nav className="flex flex-1 flex-col overflow-y-auto">
         <Link href="/" className={rowClass} onClick={onClose}>
-          Accueil
+          {t("home")}
         </Link>
 
         <Link href="/about" className={rowClass} onClick={onClose}>
@@ -147,7 +147,7 @@ export function MobileMenu({
         )}
 
         <Link href="/realisations" className={rowClass} onClick={onClose}>
-          Réalisations
+          {t("navRealisations")}
         </Link>
         <Link href="/blog" className={rowClass} onClick={onClose}>
           {data.blogs}
@@ -164,7 +164,7 @@ export function MobileMenu({
           onClick={() => toggle("langue")}
           aria-expanded={expanded === "langue"}
         >
-          Langue
+          {t("language")}
           <ChevronDown
             className={`h-[6px] w-[11px] shrink-0 transition-transform ${
               expanded === "langue" ? "rotate-180" : ""

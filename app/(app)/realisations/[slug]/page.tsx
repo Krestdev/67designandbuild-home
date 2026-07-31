@@ -8,15 +8,16 @@ import { catalogListQuery } from "@/hooks/catalog/catalogListQuery";
 import type { Catalog } from "@/hooks/catalog/type";
 import { CtaBanner } from "@/components/CtaBanner";
 import { useLocale } from "@/providers/localeProvider";
+import type { MessageKey } from "@/providers/messages";
 
 function RealisationContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  livre: "Livré",
-  "en-cours": "En cours",
-  planifie: "Planifié",
+const STATUS_KEYS: Record<string, MessageKey> = {
+  livre: "statusLivre",
+  "en-cours": "statusEnCours",
+  planifie: "statusPlanifie",
 };
 
 // Figma node 121:39/40-52 — label:value sits on one row, label auto-width,
@@ -36,7 +37,7 @@ export default function RealisationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const {
     data: matches,
@@ -114,7 +115,7 @@ export default function RealisationDetailPage({
 
         <RealisationContainer>
           <div className="flex flex-col gap-3 items-center text-center max-w-[850px] mx-auto">
-            <p className="text-sm uppercase tracking-wide text-white">Projet</p>
+            <p className="text-sm uppercase tracking-wide text-white">{t("projectEyebrow")}</p>
             <h1 className="font-semibold text-4xl md:text-[48px] leading-[1.1] tracking-[-0.025em] text-white">
               {item.title}
             </h1>
@@ -133,18 +134,20 @@ export default function RealisationDetailPage({
 
             {/* Figma node 121:38 — 16px horizontal / 20px vertical card padding */}
             <div className="bg-white border border-[#E5E7EB] divide-y divide-[#E5E7EB] self-start px-4 py-5">
-              {item.client && <MetaRow label="Client" value={item.client} />}
+              {item.client && <MetaRow label={t("metaClient")} value={item.client} />}
               {serviceCategoryTitle && (
-                <MetaRow label="Catégorie" value={serviceCategoryTitle} />
+                <MetaRow label={t("metaCategory")} value={serviceCategoryTitle} />
               )}
-              {sectorTitle && <MetaRow label="Secteur" value={sectorTitle} />}
+              {sectorTitle && <MetaRow label={t("sector")} value={sectorTitle} />}
               {item.duration && (
-                <MetaRow label="Durée du projet" value={item.duration} />
+                <MetaRow label={t("metaDuration")} value={item.duration} />
               )}
               {item.status && (
                 <MetaRow
-                  label="Statut"
-                  value={STATUS_LABELS[item.status] ?? item.status}
+                  label={t("metaStatus")}
+                  value={
+                    STATUS_KEYS[item.status] ? t(STATUS_KEYS[item.status]) : item.status
+                  }
                 />
               )}
             </div>
@@ -156,7 +159,7 @@ export default function RealisationDetailPage({
           {item.challenges && item.challenges.length > 0 && (
             <div className="mt-12">
               <h2 className="font-bold text-2xl text-[#212121] mb-3">
-                Enjeux du chantier
+                {t("challengesTitle")}
               </h2>
               <ul className="list-disc pl-5 flex flex-col gap-1">
                 {item.challenges.map((c, i) => (
@@ -212,7 +215,7 @@ export default function RealisationDetailPage({
         <section className="bg-[#1E1E1E] py-16 md:py-[120px]">
           <RealisationContainer>
             <h2 className="font-semibold text-[28px] md:text-[48px] leading-[1.1] tracking-[-0.025em] text-[#D97724] text-center mb-12">
-              Plus de réalisations
+              {t("moreRealisations")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -245,7 +248,7 @@ export default function RealisationDetailPage({
                 href="/realisations"
                 className="text-white text-sm font-medium hover:underline"
               >
-                Tout voir
+                {t("seeAll")}
               </Link>
             </div>
           </RealisationContainer>

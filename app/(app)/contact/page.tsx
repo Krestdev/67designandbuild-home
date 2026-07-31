@@ -50,7 +50,7 @@ const initialForm: FormState = {
 };
 
 export default function ContactPage() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
 
   const { data, isLoading, error } = useQuery<ContactGlobal>({
     queryKey: ["contact", locale],
@@ -85,7 +85,7 @@ export default function ContactPage() {
     const selected = Array.from(e.target.files);
     const tooLarge = selected.filter((f) => f.size > 20 * 1024 * 1024);
     if (tooLarge.length > 0) {
-      setErrorMessage("Chaque fichier doit faire 20 Mo maximum.");
+      setErrorMessage(t("fileTooLarge"));
       return;
     }
     setErrorMessage(null);
@@ -124,9 +124,7 @@ export default function ContactPage() {
     } catch (err) {
       console.error("Quote request submission failed:", err);
       setStatus("error");
-      setErrorMessage(
-        "Une erreur est survenue lors de l'envoi. Veuillez réessayer."
-      );
+      setErrorMessage(t("submitError"));
     }
   };
 
@@ -169,19 +167,19 @@ export default function ContactPage() {
 
                 <div className="flex flex-col divide-y divide-[#21212114]">
                   <div className="py-3 first:pt-0">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">Adresse</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("addressLabel")}</p>
                     <p className="text-base font-medium text-[#212121]">{data.address}</p>
                   </div>
                   <div className="py-3">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">Téléphone</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("phoneLabel")}</p>
                     <p className="text-base font-medium text-[#212121]">{data.phone}</p>
                   </div>
                   <div className="py-3">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">Adresse mail</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("emailAddressLabel")}</p>
                     <p className="text-base font-medium text-[#212121]">{data.email}</p>
                   </div>
                   <div className="py-3 last:pb-0">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">Horaires</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("hoursLabel")}</p>
                     <p className="text-base font-medium text-[#212121]">{data.hours}</p>
                   </div>
                 </div>
@@ -194,12 +192,12 @@ export default function ContactPage() {
                     className="absolute inset-0 w-full h-full border-0"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Localisation 67 Design & Build"
+                    title={t("mapIframeTitle")}
                   />
                 </div>
               ) : (
                 <div className="relative w-full aspect-[4/3] bg-[#E5E5E5] flex items-center justify-center text-sm text-[#5B5B5B]">
-                  Coordonnées manquantes dans le global Contact.
+                  {t("mapMissing")}
                 </div>
               )}
             </div>
@@ -207,40 +205,40 @@ export default function ContactPage() {
             {/* Quote Request Form */}
             <div className="order-2 md:order-1">
               <h2 className="font-semibold text-2xl leading-[1.1] text-[#212121] mb-1">
-                Demande de Devis
+                {t("quoteTitle")}
               </h2>
               <p className="text-sm leading-[1.5] text-[#5B5B5B] mb-6">
-                Plus votre projet est précis, plus notre réponse le sera.
+                {t("quoteSubtitle")}
               </p>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className={labelClass}>
-                      Nom complet <span className="text-[#D97B2C]">*</span>
+                      {t("fullName")} <span className="text-[#D97B2C]">*</span>
                     </label>
                     <input
                       name="fullName"
                       value={form.fullName}
                       onChange={handleChange}
                       required
-                      placeholder="Votre nom"
+                      placeholder={t("fullNamePlaceholder")}
                       className={inputClass}
                     />
                   </div>
                   <div>
-                    <label className={labelClass}>Société / Organisation</label>
+                    <label className={labelClass}>{t("company")}</label>
                     <input
                       name="company"
                       value={form.company}
                       onChange={handleChange}
-                      placeholder="Ex. Socaver"
+                      placeholder={t("companyPlaceholder")}
                       className={inputClass}
                     />
                   </div>
                   <div>
                     <label className={labelClass}>
-                      Email <span className="text-[#D97B2C]">*</span>
+                      {t("email")} <span className="text-[#D97B2C]">*</span>
                     </label>
                     <input
                       type="email"
@@ -248,13 +246,13 @@ export default function ContactPage() {
                       value={form.email}
                       onChange={handleChange}
                       required
-                      placeholder="Ex. vous@gmail.com"
+                      placeholder={t("emailPlaceholder")}
                       className={inputClass}
                     />
                   </div>
                   <div>
                     <label className={labelClass}>
-                      Téléphone <span className="text-[#D97B2C]">*</span>
+                      {t("phoneLabel")} <span className="text-[#D97B2C]">*</span>
                     </label>
                     <input
                       name="phone"
@@ -267,7 +265,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className={labelClass}>
-                      Type de projet <span className="text-[#D97B2C]">*</span>
+                      {t("projectType")} <span className="text-[#D97B2C]">*</span>
                     </label>
                     <select
                       name="projectType"
@@ -276,7 +274,7 @@ export default function ContactPage() {
                       required
                       className={inputClass}
                     >
-                      <option value="">Sélectionner</option>
+                      <option value="">{t("selectPlaceholder")}</option>
                       {services?.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.title}
@@ -285,14 +283,14 @@ export default function ContactPage() {
                     </select>
                   </div>
                   <div>
-                    <label className={labelClass}>Secteur</label>
+                    <label className={labelClass}>{t("sector")}</label>
                     <select
                       name="sector"
                       value={form.sector}
                       onChange={handleChange}
                       className={inputClass}
                     >
-                      <option value="">Sélectionner</option>
+                      <option value="">{t("selectPlaceholder")}</option>
                       {sectors?.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.title}
@@ -302,37 +300,37 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className={labelClass}>
-                      Localisation du projet <span className="text-[#D97B2C]">*</span>
+                      {t("location")} <span className="text-[#D97B2C]">*</span>
                     </label>
                     <input
                       name="location"
                       value={form.location}
                       onChange={handleChange}
                       required
-                      placeholder="Ville, quartier"
+                      placeholder={t("locationPlaceholder")}
                       className={inputClass}
                     />
                   </div>
                   <div>
-                    <label className={labelClass}>Délai souhaité</label>
+                    <label className={labelClass}>{t("timeline")}</label>
                     <input
                       name="timeline"
                       value={form.timeline}
                       onChange={handleChange}
-                      placeholder="Ex. 14 mois"
+                      placeholder={t("timelinePlaceholder")}
                       className={inputClass}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className={labelClass}>Budget estimatif</label>
+                  <label className={labelClass}>{t("budget")}</label>
                   <div className="flex items-center min-h-[40px] border border-[#EDD3B7] bg-[#FFF0DF] focus-within:border-[#D97B2C]">
                     <input
                       name="budget"
                       value={form.budget}
                       onChange={handleChange}
-                      placeholder="Ex. 60 000"
+                      placeholder={t("budgetPlaceholder")}
                       className="w-full bg-transparent px-3 py-1.5 text-base text-[#212121] placeholder:text-[#AFAFAF] focus:outline-none"
                     />
                     <span className="pr-3 text-sm text-[#5B5B5B]">FCFA</span>
@@ -341,7 +339,7 @@ export default function ContactPage() {
 
                 <div>
                   <label className={labelClass}>
-                    Description du Projet <span className="text-[#D97B2C]">*</span>
+                    {t("description")} <span className="text-[#D97B2C]">*</span>
                   </label>
                   <textarea
                     name="description"
@@ -349,20 +347,20 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={4}
-                    placeholder="Décrivez votre projet : nature des travaux, superficie, contraintes du site ..."
+                    placeholder={t("descriptionPlaceholder")}
                     className={inputClass}
                   />
                 </div>
 
                 <div>
-                  <label className={labelClass}>Plans, documents ou photos du site</label>
+                  <label className={labelClass}>{t("attachmentsLabel")}</label>
                   <label className="block border border-dashed border-[#AFAFAF] bg-[#FBF3EA] px-4 py-6 text-center cursor-pointer">
                     <span className="text-[#D97B2C] font-medium underline">
-                      Cliquez pour joindre un fichier
+                      {t("attachClick")}
                     </span>{" "}
-                    <span className="text-sm text-[#5B5B5B]">ou glissez-déposez</span>
+                    <span className="text-sm text-[#5B5B5B]">{t("attachDrop")}</span>
                     <p className="text-xs text-[#AFAFAF] mt-1">
-                      PDF, JPG, PNG, DWG - 20 Mo max par fichier
+                      {t("attachHint")}
                     </p>
                     <input
                       type="file"
@@ -386,7 +384,7 @@ export default function ContactPage() {
                             onClick={() => removeFile(i)}
                             className="text-[#D97B2C] ml-2 shrink-0"
                           >
-                            Retirer
+                            {t("remove")}
                           </button>
                         </li>
                       ))}
@@ -399,12 +397,12 @@ export default function ContactPage() {
                   disabled={status === "submitting"}
                   className="self-start bg-[#D97B2C] text-[#212121] px-4 py-1 h-[52px] flex items-center text-sm leading-none font-medium disabled:opacity-50"
                 >
-                  {status === "submitting" ? "Envoi en cours..." : "Envoyer ma demande de devis"}
+                  {status === "submitting" ? t("submitting") : t("submitCta")}
                 </button>
 
                 {status === "success" && (
                   <p className="text-sm text-green-700">
-                    Votre demande a bien été envoyée. Nous vous répondrons rapidement.
+                    {t("submitSuccess")}
                   </p>
                 )}
                 {status === "error" && errorMessage && (
@@ -412,8 +410,7 @@ export default function ContactPage() {
                 )}
 
                 <p className="text-xs text-[#333333] italic">
-                  *Vos données sont utilisées uniquement pour traiter votre demande et ne
-                  sont pas transmises à des tiers.
+                  {t("privacyNote")}
                 </p>
               </form>
             </div>

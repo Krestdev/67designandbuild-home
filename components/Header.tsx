@@ -80,7 +80,7 @@ function NavDropdown<
 
 export function Header() {
   const pathname = usePathname();
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null);
   const [prevPathname, setPrevPathname] = useState(pathname);
@@ -160,7 +160,7 @@ export function Header() {
             />
 
             <Link href="/realisations" className={navItemClass}>
-              Réalisations
+              {t("navRealisations")}
             </Link>
 
             <Link href="/blog" className={navItemClass}>
