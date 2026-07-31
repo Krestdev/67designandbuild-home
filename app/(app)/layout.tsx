@@ -3,6 +3,7 @@ import { Inter, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import QueryProvider from "@/providers/queryProvider";
+import { LocaleProvider } from "@/providers/localeProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
@@ -27,14 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(interTight.variable)}>
-      <QueryProvider>
-        <body className="min-h-full flex flex-col font-sans bg-[#FBF3EA]">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </body>
-      </QueryProvider>
+    <html lang="fr" className={cn(interTight.variable)}>
+      <LocaleProvider>
+        <QueryProvider>
+          <body className="min-h-full flex flex-col font-sans bg-[#FBF3EA]">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </body>
+        </QueryProvider>
+      </LocaleProvider>
     </html>
   );
 }

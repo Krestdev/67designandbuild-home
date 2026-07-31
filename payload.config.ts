@@ -15,10 +15,16 @@ export default buildConfig({
   // GLobal Data
   globals,
 
-  // languages
+  // languages — content is authored in French first, so English and
+  // Italian fall back to French (defaultLocale) for any untranslated field.
   localization: {
-    locales: ["en", "fr", "it"],
-    defaultLocale: "en",
+    locales: [
+      { code: "fr", label: "Français" },
+      { code: "en", label: "English" },
+      { code: "it", label: "Italiano" },
+    ],
+    defaultLocale: "fr",
+    fallback: true,
   },
 
   // Your Payload secret - should be a complex and secure string, unguessable

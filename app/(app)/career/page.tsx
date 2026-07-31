@@ -6,8 +6,7 @@ import { careerGlobalQuery } from "@/hooks/career/careerGlobalQuery";
 import { careerListQuery } from "@/hooks/career/careerListQuery";
 import type { CareerGlobal, Career, CareerProfile } from "@/hooks/career/type";
 import { ArrowUpRight } from "lucide-react";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function CareerContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -32,14 +31,15 @@ const CONTRACT_LABELS: Record<string, string> = {
 
 export default function CareerPage() {
   const [filter, setFilter] = useState<CareerProfile | "all">("all");
+  const { locale } = useLocale();
 
   const {
     data: intro,
     isLoading: introLoading,
     error: introError,
   } = useQuery<CareerGlobal>({
-    queryKey: ["career-global", LOCALE],
-    queryFn: () => careerGlobalQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["career-global", locale],
+    queryFn: () => careerGlobalQuery.getBlobal({ locale }),
   });
 
   const {
@@ -47,8 +47,8 @@ export default function CareerPage() {
     isLoading: listLoading,
     error: listError,
   } = useQuery<Career[]>({
-    queryKey: ["careers", LOCALE],
-    queryFn: () => careerListQuery.get({ locale: LOCALE }),
+    queryKey: ["careers", locale],
+    queryFn: () => careerListQuery.get({ locale }),
   });
 
   if (introLoading || listLoading) return null;

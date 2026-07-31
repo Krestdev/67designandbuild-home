@@ -8,8 +8,7 @@ import { ChevronDown, X } from "lucide-react";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import { NavbarGlobal } from "@/hooks/nav/type";
-
-const LOCALE = "fr";
+import { useLocale, LOCALES } from "@/providers/localeProvider";
 
 type AccordionKey = "services" | "sectors" | "langue" | null;
 
@@ -25,6 +24,7 @@ export function MobileMenu({
   onClose: () => void;
   data: NavbarGlobal;
 }) {
+  const { locale, setLocale } = useLocale();
   const [expanded, setExpanded] = useState<AccordionKey>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -34,14 +34,14 @@ export function MobileMenu({
   }, []);
 
   const { data: services } = useQuery({
-    queryKey: ["services-nav", LOCALE],
-    queryFn: () => serviceListQuery.get({ locale: LOCALE }),
+    queryKey: ["services-nav", locale],
+    queryFn: () => serviceListQuery.get({ locale }),
     enabled: open,
   });
 
   const { data: sectors } = useQuery({
-    queryKey: ["sectors-nav", LOCALE],
-    queryFn: () => sectorListQuery.get({ locale: LOCALE }),
+    queryKey: ["sectors-nav", locale],
+    queryFn: () => sectorListQuery.get({ locale }),
     enabled: open,
   });
 
@@ -172,7 +172,18 @@ export function MobileMenu({
         {expanded === "langue" && (
           <>
             <div className="border-t border-white/10" />
-            <div className={`${rowClass} font-normal`}>FR</div>
+            {LOCALES.map((l) => (
+              <button
+                key={l.code}
+                type="button"
+                onClick={() => setLocale(l.code)}
+                className={`${rowClass} font-normal ${
+                  l.code === locale ? "text-white" : "text-white/60"
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
           </>
         )}
       </nav>

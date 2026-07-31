@@ -10,8 +10,7 @@ import type { RealisationsGlobal } from "@/hooks/realisation/type";
 import type { Catalog } from "@/hooks/catalog/type";
 import type { Sector } from "@/hooks/sector/type";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function RealisationsContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-4 sm:px-6">{children}</div>;
@@ -19,20 +18,21 @@ function RealisationsContainer({ children }: { children: React.ReactNode }) {
 
 export default function RealisationsPage() {
   const [activeFilter, setActiveFilter] = useState<number | "all">("all");
+  const { locale } = useLocale();
 
   const { data: intro, isLoading: introLoading, error: introError } = useQuery<RealisationsGlobal>({
-    queryKey: ["realisations-global", LOCALE],
-    queryFn: () => realisationsGlobalQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["realisations-global", locale],
+    queryFn: () => realisationsGlobalQuery.getBlobal({ locale }),
   });
 
   const { data: catalogItems, isLoading: catalogLoading, error: catalogError } = useQuery<Catalog[]>({
-    queryKey: ["catalogs-realisations", LOCALE],
-    queryFn: () => catalogListQuery.get({ depth: 2, locale: LOCALE }),
+    queryKey: ["catalogs-realisations", locale],
+    queryFn: () => catalogListQuery.get({ depth: 2, locale }),
   });
 
   const { data: sectors, isLoading: sectorsLoading, error: sectorsError } = useQuery<Sector[]>({
-    queryKey: ["sectors-realisations", LOCALE],
-    queryFn: () => sectorListQuery.get({ locale: LOCALE }),
+    queryKey: ["sectors-realisations", locale],
+    queryFn: () => sectorListQuery.get({ locale }),
   });
 
   if (introLoading || catalogLoading || sectorsLoading) return null;

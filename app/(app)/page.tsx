@@ -12,13 +12,13 @@ import { Sectors } from "@/components/Sector";
 import { Faq } from "@/components/Faq";
 import { CtaBanner } from "@/components/CtaBanner";
 import { Container } from "@/components/Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export default function Home() {
+  const { locale } = useLocale();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["home", LOCALE],
-    queryFn: () => homeQuery.getBlobal({ depth: 2, locale: LOCALE }),
+    queryKey: ["home", locale],
+    queryFn: () => homeQuery.getBlobal({ depth: 2, locale }),
   });
 
   if (isLoading) {

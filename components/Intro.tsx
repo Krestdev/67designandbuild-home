@@ -6,8 +6,7 @@ import { aboutQuery } from "@/hooks/about/aboutQuery";
 import type { AboutGlobal } from "@/hooks/about/type";
 import { getPlainTextFromRichText } from "@/lib/getPlainTextFromRichText";
 import { Container } from "./Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 const GREY = "#AFAFAF"; // not-yet-revealed — sampled from the Figma export
 const DARK = "#212121"; // revealed — matches the site's existing dark tone
@@ -39,10 +38,11 @@ function Word({
 
 export function Intro() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { locale } = useLocale();
 
   const { data, isLoading, error } = useQuery<AboutGlobal>({
-    queryKey: ["about", LOCALE],
-    queryFn: () => aboutQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["about", locale],
+    queryFn: () => aboutQuery.getBlobal({ locale }),
   });
 
   // Tracks scroll progress specifically while this section moves through

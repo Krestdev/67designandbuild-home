@@ -7,19 +7,19 @@ import { serviceQuery } from "@/hooks/service/serviceQuery";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import type { ServicePageGlobal, Service } from "@/hooks/service/type";
 import { Container } from "./Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export function Trades() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { locale } = useLocale();
 
   const {
     data: intro,
     isLoading: introLoading,
     error: introError,
   } = useQuery<ServicePageGlobal>({
-    queryKey: ["service-intro", LOCALE],
-    queryFn: () => serviceQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["service-intro", locale],
+    queryFn: () => serviceQuery.getBlobal({ locale }),
   });
 
   const {
@@ -27,8 +27,8 @@ export function Trades() {
     isLoading: listLoading,
     error: listError,
   } = useQuery<Service[]>({
-    queryKey: ["services", LOCALE],
-    queryFn: () => serviceListQuery.get({ depth: 1, locale: LOCALE }),
+    queryKey: ["services", locale],
+    queryFn: () => serviceListQuery.get({ depth: 1, locale }),
   });
 
   if (introLoading || listLoading) return null;

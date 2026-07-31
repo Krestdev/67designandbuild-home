@@ -8,8 +8,7 @@ import { categoryListQuery } from "@/hooks/article/categoryListQuery";
 import type { ActualitesGlobal, Article, Category } from "@/hooks/article/type";
 import { formatArticleDate } from "@/lib/formatArticleDate";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function ActualitesContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -49,20 +48,22 @@ function ArticleCard({
 }
 
 export default function ActualitesPage() {
+  const { locale } = useLocale();
+
   const { data: intro, isLoading: introLoading, error: introError } = useQuery<ActualitesGlobal>({
-    queryKey: ["actualites-global", LOCALE],
-    queryFn: () => actualitesGlobalQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["actualites-global", locale],
+    queryFn: () => actualitesGlobalQuery.getBlobal({ locale }),
   });
 
   const { data: articles, isLoading: articlesLoading, error: articlesError } = useQuery<Article[]>({
-    queryKey: ["articles", LOCALE],
+    queryKey: ["articles", locale],
     queryFn: () =>
-      articleListQuery.get({ depth: 2, locale: LOCALE, sort: "-publishedDate" }),
+      articleListQuery.get({ depth: 2, locale, sort: "-publishedDate" }),
   });
 
   const { data: categories, isLoading: categoriesLoading, error: categoriesError } = useQuery<Category[]>({
-    queryKey: ["categories", LOCALE],
-    queryFn: () => categoryListQuery.get({ locale: LOCALE }),
+    queryKey: ["categories", locale],
+    queryFn: () => categoryListQuery.get({ locale }),
   });
 
   if (introLoading || articlesLoading || categoriesLoading) return null;

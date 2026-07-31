@@ -7,8 +7,7 @@ import { PlusCircle, CheckCircle2 } from "lucide-react";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import type { Service } from "@/hooks/service/type";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function ServiceContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -62,18 +61,19 @@ export default function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { locale } = useLocale();
 
   const {
     data: services,
     isLoading: serviceLoading,
     error: serviceError,
   } = useQuery<Service[]>({
-    queryKey: ["service", slug, LOCALE],
+    queryKey: ["service", slug, locale],
     queryFn: () =>
       serviceListQuery.get({
         "where[slug][equals]": slug,
         depth: 2,
-        locale: LOCALE,
+        locale,
       }),
   });
 

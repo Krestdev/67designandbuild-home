@@ -4,8 +4,7 @@ import Image from "next/image";
 import { FaLinkedin, FaFacebook, FaXTwitter, FaLink } from "react-icons/fa6";
 import { footerQuery } from "@/hooks/footer/footerQuery";
 import { Container } from "@/components/Container";
-
-const LOCALE = "fr"; // TODO: wire to real locale routing
+import { useLocale, LOCALES } from "@/providers/localeProvider";
 
 const socialIcons: Record<
   string,
@@ -17,9 +16,10 @@ const socialIcons: Record<
 };
 
 export function Footer() {
+  const { locale, setLocale } = useLocale();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["footer", LOCALE],
-    queryFn: () => footerQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["footer", locale],
+    queryFn: () => footerQuery.getBlobal({ locale }),
   });
 
   if (isLoading || error || !data) return null;
@@ -89,9 +89,18 @@ export function Footer() {
             © {new Date().getFullYear()} 67 Design & Build. {data.copyrightText}.
           </span>
           <span className="flex gap-3">
-            <button className="hover:text-white transition">FR</button>
-            <button className="hover:text-white transition">EN</button>
-            <button className="hover:text-white transition">IT</button>
+            {LOCALES.map((l) => (
+              <button
+                key={l.code}
+                type="button"
+                onClick={() => setLocale(l.code)}
+                className={`hover:text-white transition ${
+                  l.code === locale ? "text-white" : ""
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
           </span>
         </div>
       </Container>

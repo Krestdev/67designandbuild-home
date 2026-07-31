@@ -8,8 +8,7 @@ import { articleListQuery } from "@/hooks/article/articleListQuery";
 import type { Article } from "@/hooks/article/type";
 import { formatArticleDate } from "@/lib/formatArticleDate";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function ArticleContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-[1280px] mx-auto px-4 md:px-6">{children}</div>;
@@ -48,18 +47,19 @@ export default function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { locale } = useLocale();
 
   const {
     data: articleMatches,
     isLoading: articleLoading,
     error: articleError,
   } = useQuery<Article[]>({
-    queryKey: ["article", slug, LOCALE],
+    queryKey: ["article", slug, locale],
     queryFn: () =>
       articleListQuery.get({
         "where[slug][equals]": slug,
         depth: 2,
-        locale: LOCALE,
+        locale,
       }),
   });
 
@@ -73,12 +73,12 @@ export default function ArticlePage({
     data: sameCategoryArticles,
     isLoading: similarLoading,
   } = useQuery<Article[]>({
-    queryKey: ["similar-articles", categoryId, LOCALE],
+    queryKey: ["similar-articles", categoryId, locale],
     queryFn: () =>
       articleListQuery.get({
         "where[category][equals]": String(categoryId),
         depth: 2,
-        locale: LOCALE,
+        locale,
         sort: "-publishedDate",
       }),
     enabled: !!categoryId,

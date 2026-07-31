@@ -7,19 +7,19 @@ import { faqQuery } from "@/hooks/faq/faqQuery";
 import { faqListQuery } from "@/hooks/faq/faqListQuery";
 import type { FaqPageGlobal, Faq as FaqEntry } from "@/hooks/faq/type";
 import { Container } from "@/components/Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export function Faq() {
   const [openId, setOpenId] = useState<number | null>(1);
+  const { locale } = useLocale();
 
   const {
     data: intro,
     isLoading: introLoading,
     error: introError,
   } = useQuery<FaqPageGlobal>({
-    queryKey: ["faq-intro", LOCALE],
-    queryFn: () => faqQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["faq-intro", locale],
+    queryFn: () => faqQuery.getBlobal({ locale }),
   });
 
   const {
@@ -27,8 +27,8 @@ export function Faq() {
     isLoading: listLoading,
     error: listError,
   } = useQuery<FaqEntry[]>({
-    queryKey: ["faqs", LOCALE],
-    queryFn: () => faqListQuery.get({ locale: LOCALE }),
+    queryKey: ["faqs", locale],
+    queryFn: () => faqListQuery.get({ locale }),
   });
 
   if (introLoading || listLoading) return null;

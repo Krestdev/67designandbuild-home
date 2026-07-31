@@ -7,8 +7,7 @@ import { PlusCircle } from "lucide-react";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import type { Sector } from "@/hooks/sector/type";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function SectorContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -94,18 +93,19 @@ export default function SectorPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { locale } = useLocale();
 
   const {
     data: sectors,
     isLoading,
     error,
   } = useQuery<Sector[]>({
-    queryKey: ["sector", slug, LOCALE],
+    queryKey: ["sector", slug, locale],
     queryFn: () =>
       sectorListQuery.get({
         "where[slug][equals]": slug,
         depth: 2,
-        locale: LOCALE,
+        locale,
       }),
   });
 

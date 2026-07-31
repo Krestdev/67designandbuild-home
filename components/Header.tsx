@@ -9,8 +9,7 @@ import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import { ChevronDown, ArrowUpRight, Menu } from "lucide-react";
 import { MobileMenu } from "@/components/nav/MobileMenu";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale, LOCALES } from "@/providers/localeProvider";
 
 // Same 24px-at-all-breakpoints finding confirmed on the About page — now
 // also confirmed here via Figma MCP. Container's md:px-8 (32px) over-pads
@@ -23,7 +22,7 @@ function NavContainer({ children }: { children: React.ReactNode }) {
 const navItemClass =
   "flex items-center justify-center min-h-[36px] p-1 font-medium text-sm text-white whitespace-nowrap";
 
-type DropdownKey = "services" | "sectors" | null;
+type DropdownKey = "services" | "sectors" | "lang" | null;
 
 // PLACEHOLDER STYLING — no Figma spec yet for the Desktop dropdown panel
 // (only Mobile frame screenshots provided so far). Mirrors the mobile
@@ -81,24 +80,25 @@ function NavDropdown<
 
 export function Header() {
   const pathname = usePathname();
+  const { locale, setLocale } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null);
   const navRef = useRef<HTMLElement>(null);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["navbar", LOCALE],
-    queryFn: () => navbarQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["navbar", locale],
+    queryFn: () => navbarQuery.getBlobal({ locale }),
   });
 
   const { data: services } = useQuery({
-    queryKey: ["services-nav", LOCALE],
-    queryFn: () => serviceListQuery.get({ locale: LOCALE }),
+    queryKey: ["services-nav", locale],
+    queryFn: () => serviceListQuery.get({ locale }),
     enabled: openDropdown === "services",
   });
 
   const { data: sectors } = useQuery({
-    queryKey: ["sectors-nav", LOCALE],
-    queryFn: () => sectorListQuery.get({ locale: LOCALE }),
+    queryKey: ["sectors-nav", locale],
+    queryFn: () => sectorListQuery.get({ locale }),
     enabled: openDropdown === "sectors",
   });
 
@@ -168,9 +168,43 @@ export function Header() {
               {data.careers}
             </Link>
 
-            <span className={`${navItemClass} gap-2 px-2 py-1 cursor-pointer`}>
-              FR <ChevronDown className="w-4 h-4" />
-            </span>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() =>
+                  setOpenDropdown((cur) => (cur === "lang" ? null : "lang"))
+                }
+                aria-expanded={openDropdown === "lang"}
+                className={`${navItemClass} gap-2 px-2 py-1 cursor-pointer`}
+              >
+                {locale.toUpperCase()}
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${
+                    openDropdown === "lang" ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {openDropdown === "lang" && (
+                <div className="absolute left-0 top-full mt-2 min-w-[120px] rounded-lg bg-[#212121] py-2 shadow-lg">
+                  {LOCALES.map((l, idx) => (
+                    <button
+                      key={l.code}
+                      type="button"
+                      onClick={() => {
+                        setLocale(l.code);
+                        setOpenDropdown(null);
+                      }}
+                      className={`block w-full px-4 py-2.5 text-left text-sm hover:bg-white/5 ${
+                        idx > 0 ? "border-t border-white/10" : ""
+                      } ${l.code === locale ? "text-white" : "text-white/70"}`}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <Link href="/contact" className={`${navItemClass} gap-2`}>
               {data.contact} <ArrowUpRight className="w-4 h-4" />

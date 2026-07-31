@@ -8,19 +8,19 @@ import { catalogQuery } from "@/hooks/catalog/catalogQuery";
 import { catalogListQuery } from "@/hooks/catalog/catalogListQuery";
 import type { CatalogPageGlobal, Catalog } from "@/hooks/catalog/type";
 import { Container } from "@/components/Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export function Gallery() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const { locale } = useLocale();
 
   const {
     data: intro,
     isLoading: introLoading,
     error: introError,
   } = useQuery<CatalogPageGlobal>({
-    queryKey: ["catalog-intro", LOCALE],
-    queryFn: () => catalogQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["catalog-intro", locale],
+    queryFn: () => catalogQuery.getBlobal({ locale }),
   });
 
   const {
@@ -28,8 +28,8 @@ export function Gallery() {
     isLoading: listLoading,
     error: listError,
   } = useQuery<Catalog[]>({
-    queryKey: ["catalogs", LOCALE],
-    queryFn: () => catalogListQuery.get({ depth: 2, locale: LOCALE }),
+    queryKey: ["catalogs", locale],
+    queryFn: () => catalogListQuery.get({ depth: 2, locale }),
   });
 
   if (introLoading || listLoading) return null;

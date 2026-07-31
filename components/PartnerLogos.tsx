@@ -3,13 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Partner } from "@/types";
 import { partnerListQuery } from "@/hooks/partner/partnerListQuery";
 import { Container } from "./Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export function PartnerLogos() {
+  const { locale } = useLocale();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["partners", LOCALE],
-    queryFn: () => partnerListQuery.get({ depth: 1, locale: LOCALE }),
+    queryKey: ["partners", locale],
+    queryFn: () => partnerListQuery.get({ depth: 1, locale }),
   });
 
   if (isLoading || error || !data || data.length === 0) return null;

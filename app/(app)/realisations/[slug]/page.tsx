@@ -7,8 +7,7 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import { catalogListQuery } from "@/hooks/catalog/catalogListQuery";
 import type { Catalog } from "@/hooks/catalog/type";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function RealisationContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -37,18 +36,19 @@ export default function RealisationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { locale } = useLocale();
 
   const {
     data: matches,
     isLoading,
     error,
   } = useQuery<Catalog[]>({
-    queryKey: ["realisation", slug, LOCALE],
+    queryKey: ["realisation", slug, locale],
     queryFn: () =>
       catalogListQuery.get({
         "where[slug][equals]": slug,
         depth: 2,
-        locale: LOCALE,
+        locale,
       }),
   });
 
@@ -62,12 +62,12 @@ export default function RealisationDetailPage({
     data: relatedMatches,
     isLoading: relatedLoading,
   } = useQuery<Catalog[]>({
-    queryKey: ["realisations-related", categoryId, LOCALE],
+    queryKey: ["realisations-related", categoryId, locale],
     queryFn: () =>
       catalogListQuery.get({
         "where[category][equals]": String(categoryId),
         depth: 2,
-        locale: LOCALE,
+        locale,
       }),
     enabled: !!categoryId,
   });

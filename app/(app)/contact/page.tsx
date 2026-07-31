@@ -12,8 +12,7 @@ import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import type { Sector } from "@/hooks/sector/type";
 import { quoteRequestQuery } from "@/hooks/quoteRequest/quoteRequestQuery";
 import { uploadMedia } from "@/lib/uploadMedia";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 function ContactContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -51,19 +50,21 @@ const initialForm: FormState = {
 };
 
 export default function ContactPage() {
+  const { locale } = useLocale();
+
   const { data, isLoading, error } = useQuery<ContactGlobal>({
-    queryKey: ["contact", LOCALE],
-    queryFn: () => contactQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["contact", locale],
+    queryFn: () => contactQuery.getBlobal({ locale }),
   });
 
   const { data: services } = useQuery<Service[]>({
-    queryKey: ["services-options", LOCALE],
-    queryFn: () => serviceListQuery.get({ locale: LOCALE }),
+    queryKey: ["services-options", locale],
+    queryFn: () => serviceListQuery.get({ locale }),
   });
 
   const { data: sectors } = useQuery<Sector[]>({
-    queryKey: ["sectors-options", LOCALE],
-    queryFn: () => sectorListQuery.get({ locale: LOCALE }),
+    queryKey: ["sectors-options", locale],
+    queryFn: () => sectorListQuery.get({ locale }),
   });
 
   const [form, setForm] = useState<FormState>(initialForm);

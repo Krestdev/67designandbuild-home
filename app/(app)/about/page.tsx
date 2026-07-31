@@ -6,8 +6,7 @@ import { aboutQuery } from "@/hooks/about/aboutQuery";
 import type { AboutGlobal } from "@/hooks/about/type";
 import { PartnerLogos } from "@/components/PartnerLogos";
 import { CtaBanner } from "@/components/CtaBanner";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 // NOTE: using a local wrapper instead of <Container> — Figma confirms 24px
 // horizontal padding at ALL breakpoints for this page (Container's md:px-8
@@ -18,9 +17,10 @@ function AboutContainer({ children }: { children: React.ReactNode }) {
 }
 
 export default function AboutPage() {
+  const { locale } = useLocale();
   const { data, isLoading, error } = useQuery<AboutGlobal>({
-    queryKey: ["about", LOCALE],
-    queryFn: () => aboutQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["about", locale],
+    queryFn: () => aboutQuery.getBlobal({ locale }),
   });
 
   if (isLoading || error || !data) return null;

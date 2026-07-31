@@ -6,13 +6,13 @@ import Link from "next/link";
 import { ctaBannerQuery } from "@/hooks/cta/ctaQuery";
 import type { CtaBannerGlobal } from "@/hooks/cta/type";
 import { Container } from "@/components/Container";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export function CtaBanner() {
+  const { locale } = useLocale();
   const { data, isLoading, error } = useQuery<CtaBannerGlobal>({
-    queryKey: ["cta-banner", LOCALE],
-    queryFn: () => ctaBannerQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["cta-banner", locale],
+    queryFn: () => ctaBannerQuery.getBlobal({ locale }),
   });
 
   if (isLoading || error || !data) return null;

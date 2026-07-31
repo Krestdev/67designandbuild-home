@@ -5,17 +5,18 @@ import Image from "next/image";
 import { sectorQuery } from "@/hooks/sector/sectorQuery";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import type { SectorPageGlobal, Sector } from "@/hooks/sector/type";
-
-const LOCALE = "fr"; // TODO: swap for useLocale() once the provider exists
+import { useLocale } from "@/providers/localeProvider";
 
 export function Sectors() {
+  const { locale } = useLocale();
+
   const {
     data: intro,
     isLoading: introLoading,
     error: introError,
   } = useQuery<SectorPageGlobal>({
-    queryKey: ["sector-intro", LOCALE],
-    queryFn: () => sectorQuery.getBlobal({ locale: LOCALE }),
+    queryKey: ["sector-intro", locale],
+    queryFn: () => sectorQuery.getBlobal({ locale }),
   });
 
   const {
@@ -23,9 +24,9 @@ export function Sectors() {
     isLoading: listLoading,
     error: listError,
   } = useQuery<Sector[]>({
-    queryKey: ["sectors", LOCALE],
+    queryKey: ["sectors", locale],
     queryFn: () =>
-      sectorListQuery.get({ depth: 1, locale: LOCALE, sort: "createdAt" }),
+      sectorListQuery.get({ depth: 1, locale, sort: "createdAt" }),
   });
 
   if (introLoading || listLoading) return null;
