@@ -26,12 +26,7 @@ export function MobileMenu({
 }) {
   const { locale, setLocale } = useLocale();
   const [expanded, setExpanded] = useState<AccordionKey>(null);
-  const [mounted, setMounted] = useState(false);
-
-  // document.body doesn't exist during SSR — only portal once mounted client-side
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [prevOpen, setPrevOpen] = useState(open);
 
   const { data: services } = useQuery({
     queryKey: ["services-nav", locale],
@@ -55,11 +50,18 @@ export function MobileMenu({
     }
   }, [open]);
 
-  useEffect(() => {
+  // Reset the accordion when the menu closes — adjusted during render
+  // (not an effect) per https://react.dev/learn/you-might-not-need-an-effect
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (!open) setExpanded(null);
-  }, [open]);
+  }
 
-  if (!open || !mounted) return null;
+  // `open` only ever becomes true from a user click (Header's onClick),
+  // which cannot happen before hydration — so `document` is always
+  // defined here. The check just keeps the SSR pass (always `open===false`)
+  // type-safe without needing a separate "mounted" state + effect.
+  if (!open || typeof document === "undefined") return null;
 
   const toggle = (key: AccordionKey) =>
     setExpanded((cur) => (cur === key ? null : key));

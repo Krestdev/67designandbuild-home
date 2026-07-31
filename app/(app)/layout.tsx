@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={cn(interTight.variable)}>
+    <html lang="fr" className={cn(interTight.variable, inter.variable)}>
       <LocaleProvider>
         <QueryProvider>
           <body className="min-h-full flex flex-col font-sans bg-[#FBF3EA]">

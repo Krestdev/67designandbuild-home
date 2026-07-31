@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -83,7 +83,15 @@ export function Header() {
   const { locale, setLocale } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null);
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const navRef = useRef<HTMLElement>(null);
+
+  // Close the open dropdown on route change — adjusted during render
+  // (not an effect) per https://react.dev/learn/you-might-not-need-an-effect
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpenDropdown(null);
+  }
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["navbar", locale],
@@ -101,11 +109,6 @@ export function Header() {
     queryFn: () => sectorListQuery.get({ locale }),
     enabled: openDropdown === "sectors",
   });
-
-  // Close dropdown on route change
-  useEffect(() => {
-    setOpenDropdown(null);
-  }, [pathname]);
 
   if (isLoading || error || !data) return null;
 

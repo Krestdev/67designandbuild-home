@@ -69,10 +69,7 @@ export default function ArticlePage({
       ? article.category.id
       : article?.category;
 
-  const {
-    data: sameCategoryArticles,
-    isLoading: similarLoading,
-  } = useQuery<Article[]>({
+  const { data: sameCategoryArticles } = useQuery<Article[]>({
     queryKey: ["similar-articles", categoryId, locale],
     queryFn: () =>
       articleListQuery.get({

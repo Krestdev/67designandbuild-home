@@ -38,6 +38,12 @@ export function LocaleProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
+    // Deliberately deferred to an effect: state must start at DEFAULT_LOCALE
+    // on both the server render and the client's first (hydration) render so
+    // they match. Reading localStorage synchronously in a lazy useState
+    // initializer would make the client's first render diverge from the
+    // server-rendered HTML and trigger a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (isLocale(stored)) setLocaleState(stored);
   }, []);
 

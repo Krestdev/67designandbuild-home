@@ -1,5 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { Partner } from "@/types";
 import { partnerListQuery } from "@/hooks/partner/partnerListQuery";
 import { Container } from "./Container";
@@ -26,9 +27,11 @@ export function PartnerLogos() {
             if (!logoUrl) return null;
 
             const content = (
-              <img
+              <Image
                 src={logoUrl}
                 alt={partner.title}
+                width={110}
+                height={24}
                 className="block h-6 w-[110px] object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition"
               />
             );
