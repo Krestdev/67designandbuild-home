@@ -1,7 +1,6 @@
 "use client";
 import JsonViewer from "@/components/dev/JsonViewer";
 import FetchError from "@/components/errors";
-import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import { sectorQuery } from "@/hooks/sector/sectorQuery";
 import { useQuery } from "@tanstack/react-query";
 
@@ -16,7 +15,7 @@ const Page = () => {
     error: error2,
   } = useQuery({
     queryKey: ["sectorListQuery"],
-    queryFn: () => sectorListQuery.getBlobal(),
+    queryFn: () => sectorQuery.getBlobal(),
   });
 
   if (isLoading || isLoading2) {

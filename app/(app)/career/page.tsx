@@ -1,13 +1,13 @@
 "use client";
 import JsonViewer from "@/components/dev/JsonViewer";
 import FetchError from "@/components/errors";
-import { careerListQuery } from "@/hooks/career/careerListQuery";
+import { careerQuery } from "@/hooks/career/careerListQuery";
 import { useQuery } from "@tanstack/react-query";
 
 const Page = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["careerListQuery"],
-    queryFn: () => careerListQuery.getBlobal(),
+    queryFn: () => careerQuery.getBlobal(),
   });
 
   if (isLoading) {
