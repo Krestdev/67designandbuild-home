@@ -148,17 +148,21 @@ export default function CareerPage() {
             </div>
           ) : (
             /* ---- EMPTY STATE ---- */
-            <div className="flex flex-col items-center text-center py-16">
-              {/* TODO: replace with the illustrated folder/paper-airplane
-                  graphic from Figma — no exportable asset pulled yet */}
-              <div className="w-24 h-24 mb-6 bg-[#EDD3B7]/40 rounded-full" />
-              <h3 className="font-semibold text-2xl text-[#212121] mb-2">
-                {intro.emptyStateTitle}
-              </h3>
-              <p className="text-base text-[#AFAFAF] max-w-md">
-                {intro.emptyStateSubtitle}
-              </p>
-            </div>
+           <div className="flex flex-col items-center text-center py-16">
+  <Image
+    src="/empty-career.png"
+    alt="The Empty Career State Illustration"
+    width={166}
+    height={200}
+    className="mb-6"
+  />
+  <h3 className="font-semibold text-2xl text-[#212121] mb-2">
+    {intro.emptyStateTitle}
+  </h3>
+  <p className="text-base text-[#AFAFAF] max-w-md">
+    {intro.emptyStateSubtitle}
+  </p>
+</div>
           )}
         </CareerContainer>
       </section>
