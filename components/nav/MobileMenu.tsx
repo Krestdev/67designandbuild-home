@@ -8,7 +8,7 @@ import { ChevronDown, X } from "lucide-react";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import { NavbarGlobal } from "@/hooks/nav/type";
-import { useLocale, LOCALES } from "@/providers/localeProvider";
+import { useLocaleStore, LOCALES } from "@/store/locale-store";
 
 type AccordionKey = "services" | "sectors" | "langue" | null;
 
@@ -24,7 +24,7 @@ export function MobileMenu({
   onClose: () => void;
   data: NavbarGlobal;
 }) {
-  const { locale, setLocale, t } = useLocale();
+  const { locale, setLocale, t } = useLocaleStore();
   const [expanded, setExpanded] = useState<AccordionKey>(null);
   const [prevOpen, setPrevOpen] = useState(open);
 

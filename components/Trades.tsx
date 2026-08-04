@@ -7,11 +7,11 @@ import { serviceQuery } from "@/hooks/service/serviceQuery";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import type { ServicePageGlobal, Service } from "@/hooks/service/type";
 import { Container } from "./Container";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 export function Trades() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { locale } = useLocale();
+  const { locale } = useLocaleStore();
 
   const {
     data: intro,

@@ -12,10 +12,10 @@ import { Sectors } from "@/components/Sector";
 import { Faq } from "@/components/Faq";
 import { CtaBanner } from "@/components/CtaBanner";
 import { Container } from "@/components/Container";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 export default function Home() {
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["home", locale],
     queryFn: () => homeQuery.getBlobal({ depth: 2, locale }),

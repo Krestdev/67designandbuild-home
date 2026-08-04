@@ -8,7 +8,7 @@ import { articleListQuery } from "@/hooks/article/articleListQuery";
 import type { Article } from "@/hooks/article/type";
 import { formatArticleDate } from "@/lib/formatArticleDate";
 import { CtaBanner } from "@/components/CtaBanner";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 function ArticleContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-[1280px] mx-auto px-4 md:px-6">{children}</div>;
@@ -47,7 +47,7 @@ export default function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const {
     data: articleMatches,

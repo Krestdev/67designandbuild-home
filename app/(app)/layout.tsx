@@ -3,9 +3,9 @@ import { Inter, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import QueryProvider from "@/providers/queryProvider";
-import { LocaleProvider } from "@/providers/localeProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LocaleInitializer } from "@/components/LocaleInitializer";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -27,17 +27,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+   return (
     <html lang="fr" className={cn(interTight.variable, inter.variable)}>
-      <LocaleProvider>
-        <QueryProvider>
-          <body className="min-h-full flex flex-col font-sans bg-[#FBF3EA]">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </body>
-        </QueryProvider>
-      </LocaleProvider>
+      <QueryProvider>
+        <body className="min-h-full flex flex-col font-sans bg-[#FBF3EA]">
+          <LocaleInitializer />
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </body>
+      </QueryProvider>
     </html>
   );
 }

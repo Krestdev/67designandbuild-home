@@ -5,10 +5,10 @@ import Image from "next/image";
 import { sectorQuery } from "@/hooks/sector/sectorQuery";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import type { SectorPageGlobal, Sector } from "@/hooks/sector/type";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 export function Sectors() {
-  const { locale } = useLocale();
+  const { locale } = useLocaleStore();
 
   const {
     data: intro,

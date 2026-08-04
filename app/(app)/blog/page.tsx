@@ -8,7 +8,7 @@ import { categoryListQuery } from "@/hooks/article/categoryListQuery";
 import type { ActualitesGlobal, Article, Category } from "@/hooks/article/type";
 import { formatArticleDate } from "@/lib/formatArticleDate";
 import { CtaBanner } from "@/components/CtaBanner";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 function ActualitesContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -48,7 +48,7 @@ function ArticleCard({
 }
 
 export default function ActualitesPage() {
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const { data: intro, isLoading: introLoading, error: introError } = useQuery<ActualitesGlobal>({
     queryKey: ["actualites-global", locale],

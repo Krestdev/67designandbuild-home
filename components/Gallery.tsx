@@ -8,11 +8,11 @@ import { catalogQuery } from "@/hooks/catalog/catalogQuery";
 import { catalogListQuery } from "@/hooks/catalog/catalogListQuery";
 import type { CatalogPageGlobal, Catalog } from "@/hooks/catalog/type";
 import { Container } from "@/components/Container";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 export function Gallery() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const {
     data: intro,

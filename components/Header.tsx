@@ -9,7 +9,7 @@ import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import { ChevronDown, ArrowUpRight, Menu } from "lucide-react";
 import { MobileMenu } from "@/components/nav/MobileMenu";
-import { useLocale, LOCALES } from "@/providers/localeProvider";
+import { useLocaleStore, LOCALES } from "@/store/locale-store";
 
 // Same 24px-at-all-breakpoints finding confirmed on the About page — now
 // also confirmed here via Figma MCP. Container's md:px-8 (32px) over-pads
@@ -80,7 +80,7 @@ function NavDropdown<
 
 export function Header() {
   const pathname = usePathname();
-  const { locale, setLocale, t } = useLocale();
+  const { locale, setLocale, t } = useLocaleStore();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null);
   const [prevPathname, setPrevPathname] = useState(pathname);

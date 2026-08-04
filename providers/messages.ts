@@ -1,4 +1,4 @@
-import type { Locale } from "./localeProvider";
+import type { Locale } from "@/store/locale-store";
 
 // Static UI strings that aren't part of any Payload collection/global —
 // button labels, section headings, form labels, filter chips, etc. CMS

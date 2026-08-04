@@ -6,7 +6,7 @@ import { careerGlobalQuery } from "@/hooks/career/careerGlobalQuery";
 import { careerListQuery } from "@/hooks/career/careerListQuery";
 import type { CareerGlobal, Career, CareerProfile } from "@/hooks/career/type";
 import { ArrowUpRight } from "lucide-react";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 import type { MessageKey } from "@/providers/messages";
 
 function CareerContainer({ children }: { children: React.ReactNode }) {
@@ -32,7 +32,7 @@ const CONTRACT_KEYS: Record<string, MessageKey> = {
 
 export default function CareerPage() {
   const [filter, setFilter] = useState<CareerProfile | "all">("all");
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const {
     data: intro,

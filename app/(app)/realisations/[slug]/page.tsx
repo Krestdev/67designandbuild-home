@@ -7,7 +7,7 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import { catalogListQuery } from "@/hooks/catalog/catalogListQuery";
 import type { Catalog } from "@/hooks/catalog/type";
 import { CtaBanner } from "@/components/CtaBanner";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 import type { MessageKey } from "@/providers/messages";
 
 function RealisationContainer({ children }: { children: React.ReactNode }) {
@@ -37,7 +37,7 @@ export default function RealisationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const {
     data: matches,

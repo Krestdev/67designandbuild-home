@@ -4,10 +4,10 @@ import Image from "next/image";
 import { Partner } from "@/types";
 import { partnerListQuery } from "@/hooks/partner/partnerListQuery";
 import { Container } from "./Container";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 export function PartnerLogos() {
-  const { locale } = useLocale();
+  const { locale } = useLocaleStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["partners", locale],
     queryFn: () => partnerListQuery.get({ depth: 1, locale }),

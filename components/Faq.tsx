@@ -7,11 +7,11 @@ import { faqQuery } from "@/hooks/faq/faqQuery";
 import { faqListQuery } from "@/hooks/faq/faqListQuery";
 import type { FaqPageGlobal, Faq as FaqEntry } from "@/hooks/faq/type";
 import { Container } from "@/components/Container";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 export function Faq() {
   const [openId, setOpenId] = useState<number | null>(1);
-  const { locale } = useLocale();
+  const { locale } = useLocaleStore();
 
   const {
     data: intro,

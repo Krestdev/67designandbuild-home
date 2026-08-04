@@ -6,7 +6,7 @@ import { aboutQuery } from "@/hooks/about/aboutQuery";
 import type { AboutGlobal } from "@/hooks/about/type";
 import { getPlainTextFromRichText } from "@/lib/getPlainTextFromRichText";
 import { Container } from "./Container";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 const GREY = "#AFAFAF"; // not-yet-revealed — sampled from the Figma export
 const DARK = "#212121"; // revealed — matches the site's existing dark tone
@@ -38,7 +38,7 @@ function Word({
 
 export function Intro() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { locale } = useLocale();
+  const { locale } = useLocaleStore();
 
   const { data, isLoading, error } = useQuery<AboutGlobal>({
     queryKey: ["about", locale],

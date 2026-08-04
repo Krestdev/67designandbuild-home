@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FaLinkedin, FaFacebook, FaXTwitter, FaLink } from "react-icons/fa6";
 import { footerQuery } from "@/hooks/footer/footerQuery";
 import { Container } from "@/components/Container";
-import { useLocale, LOCALES } from "@/providers/localeProvider";
+import { useLocaleStore, LOCALES } from "@/store/locale-store";
 
 const socialIcons: Record<
   string,
@@ -16,7 +16,7 @@ const socialIcons: Record<
 };
 
 export function Footer() {
-  const { locale, setLocale, t } = useLocale();
+  const { locale, setLocale, t } = useLocaleStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["footer", locale],
     queryFn: () => footerQuery.getBlobal({ locale }),

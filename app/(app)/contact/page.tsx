@@ -12,7 +12,7 @@ import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import type { Sector } from "@/hooks/sector/type";
 import { quoteRequestQuery } from "@/hooks/quoteRequest/quoteRequestQuery";
 import { uploadMedia } from "@/lib/uploadMedia";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 function ContactContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-6">{children}</div>;
@@ -50,7 +50,7 @@ const initialForm: FormState = {
 };
 
 export default function ContactPage() {
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const { data, isLoading, error } = useQuery<ContactGlobal>({
     queryKey: ["contact", locale],

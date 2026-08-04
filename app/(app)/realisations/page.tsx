@@ -10,7 +10,7 @@ import type { RealisationsGlobal } from "@/hooks/realisation/type";
 import type { Catalog } from "@/hooks/catalog/type";
 import type { Sector } from "@/hooks/sector/type";
 import { CtaBanner } from "@/components/CtaBanner";
-import { useLocale } from "@/providers/localeProvider";
+import { useLocaleStore } from "@/store/locale-store";
 
 function RealisationsContainer({ children }: { children: React.ReactNode }) {
   return <div className="max-w-7xl mx-auto px-4 sm:px-6">{children}</div>;
@@ -18,7 +18,7 @@ function RealisationsContainer({ children }: { children: React.ReactNode }) {
 
 export default function RealisationsPage() {
   const [activeFilter, setActiveFilter] = useState<number | "all">("all");
-  const { locale, t } = useLocale();
+  const { locale, t } = useLocaleStore();
 
   const { data: intro, isLoading: introLoading, error: introError } = useQuery<RealisationsGlobal>({
     queryKey: ["realisations-global", locale],
