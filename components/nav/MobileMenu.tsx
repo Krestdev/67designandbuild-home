@@ -105,7 +105,7 @@ export function MobileMenu({
               service.slug ? (
                 <Link
                   key={service.id}
-                  href={`/services/${service.slug}`}
+                  href={`/service/${service.slug}`}
                   className={`${rowClass} font-normal`}
                   onClick={onClose}
                 >

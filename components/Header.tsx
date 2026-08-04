@@ -140,7 +140,7 @@ export function Header() {
             <NavDropdown
               label={data.services}
               items={services}
-              basePath="/services"
+              basePath="/service"
               isOpen={openDropdown === "services"}
               onToggle={() =>
                 setOpenDropdown((cur) =>
