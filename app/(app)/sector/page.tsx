@@ -1,7 +1,6 @@
 "use client";
 import JsonViewer from "@/components/dev/JsonViewer";
 import FetchError from "@/components/errors";
-import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import { sectorQuery } from "@/hooks/sector/sectorQuery";
 import { useQuery } from "@tanstack/react-query";
 
