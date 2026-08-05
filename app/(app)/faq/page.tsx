@@ -1,13 +1,14 @@
 "use client";
 import JsonViewer from "@/components/dev/JsonViewer";
 import FetchError from "@/components/errors";
+import { faqListQuery } from "@/hooks/faq/faqListQuery";
 import { faqQuery } from "@/hooks/faq/faqQuery";
 import { useQuery } from "@tanstack/react-query";
 
 const Page = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["faqQuery"],
-    queryFn: () => faqQuery.get(),
+    queryFn: () => faqQuery.getBlobal(),
   });
   const {
     data: data2,
@@ -15,7 +16,7 @@ const Page = () => {
     error: error2,
   } = useQuery({
     queryKey: ["faqListQuery"],
-    queryFn: () => faqQuery.getBlobal(),
+    queryFn: () => faqListQuery.get(),
   });
 
   if (isLoading || isLoading2) {

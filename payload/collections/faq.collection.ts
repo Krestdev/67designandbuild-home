@@ -1,7 +1,7 @@
 import { CollectionConfig } from "payload";
 
 export const Faq: CollectionConfig = {
-  slug: "faq",
+  slug: "faqs",
   admin: { useAsTitle: "question" },
   access: {
     read: () => true,

@@ -1,10 +1,10 @@
-import { BaseQuery } from "../baseQuery";
+import { BaseListQuery } from "../baseListQuery";
 import { Career } from "./type";
 
-class CareerQuery extends BaseQuery<Career, Career> {
+class CareerListQuery extends BaseListQuery<Career, Career> {
   constructor() {
     super("/career");
   }
 }
 
-export const careerQuery = new CareerQuery();
+export const careerListQuery = new CareerListQuery();

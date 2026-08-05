@@ -1,4 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter-tight);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -124,10 +138,11 @@
   body {
     @apply bg-background text-foreground;
   }
-  button:not(:disabled), [role="button"]:not(:disabled) {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
     cursor: pointer;
   }
   html {
-    @apply font-sans;
+    /* @apply font-sans; */
   }
 }

@@ -1,141 +1,98 @@
 "use client";
-import JsonViewer from "@/components/dev/JsonViewer";
-import FetchError from "@/components/errors";
-import { homeQuery } from "@/hooks/home/homeQuery";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { homeQuery } from "@/hooks/home/homeQuery";
+import FetchError from "@/components/errors";
+import { PartnerLogos } from "@/components/PartnerLogos";
+import { Intro } from "@/components/Intro";
+import { Trades } from "@/components/Trades";
+import { Gallery } from "@/components/Gallery";
+import { Sectors } from "@/components/Sector";
+import { Faq } from "@/components/Faq";
+import { CtaBanner } from "@/components/CtaBanner";
+import { Container } from "@/components/Container";
+import { useLocaleStore } from "@/store/locale-store";
 
 export default function Home() {
+  const { locale, t } = useLocaleStore();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["todos"],
-    queryFn: () => homeQuery.get({ depth: 2, locale: "fr" }),
+    queryKey: ["home", locale],
+    queryFn: () => homeQuery.getBlobal({ depth: 2, locale }),
   });
 
   if (isLoading) {
     return (
-      <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-        Loading...
+      <div className="min-h-screen flex items-center justify-center">
+        {t("loading")}
       </div>
     );
   }
 
-  if (error) {
-    return <FetchError error={error} />;
+  if (error || !data) {
+    return <FetchError error={error} data={data === null || data === undefined} />;
   }
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-4 py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/logo67.svg"
-          alt="67design logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-md text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Follow the instructions to get started
-          </h1>
-
-          <div>
-            <h2 className="max-w-md text-2xl font-medium leading-10 tracking-tight text-black dark:text-zinc-50">
-              Scoop Document
-            </h2>
-            <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-              To begin with, take a look at the{" "}
-              <a
-                href="https://app.clickup.com/9015899775/v/dc/8cp7dkz-4935/8cp7dkz-2415"
-                className="font-medium text-zinc-950 dark:text-zinc-50"
-              >
-                scoop document
-              </a>{" "}
-              file.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="max-w-md text-2xl font-medium leading-10 tracking-tight text-black dark:text-zinc-50">
-              Design Overview
-            </h2>
-            <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-              To follow up, go through the{" "}
-              <a
-                href="https://www.figma.com/design/EUA51YEj3npzvLUjWKGjjV/67-Design-And-Build?node-id=0-1&p=f&t=LOsot6LfUa7ahF1r-0"
-                className="font-medium text-zinc-950 dark:text-zinc-50"
-              >
-                figma design
-              </a>{" "}
-              file.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="max-w-md text-2xl font-medium leading-10 tracking-tight text-black dark:text-zinc-50">
-              To get started, edit the page.tsx file.
-            </h2>
-            <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-              Looking for a starting point or more instructions? Head over to
-              the{" "}
-              <a
-                href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                className="font-medium text-zinc-950 dark:text-zinc-50"
-              >
-                Learning
-              </a>{" "}
-              center.
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-
-        {data && (
-          <div className="flex flex-col m-4 gap-4 text-base font-medium sm:flex-row">
-            <JsonViewer json={data} />
-          </div>
+    <div>
+      {/* ---- HERO ---- */}
+      <section className="relative min-h-screen flex items-end">
+        {data.heroImage && typeof data.heroImage === "object" && (
+          <Image
+            src={data.heroImage.url}
+            alt={data.heroImage.alt ?? ""}
+            fill
+            priority
+            className="object-cover -z-10"
+          />
         )}
-        {[
-          {
-            name: "about",
-            link: "/about",
-          },
-          {
-            name: "blog",
-            link: "/blog",
-          },
-          {
-            name: "career",
-            link: "/career",
-          },
-          {
-            name: "faq",
-            link: "/faq",
-          },
-          {
-            name: "sector",
-            link: "/sector",
-          },
-          {
-            name: "service",
-            link: "/service",
-          },
-        ].map((item) => (
-          <Link key={item.name} href={item.link}>
-            {item.name}
-          </Link>
-        ))}
-      </main>
+        <div className="absolute inset-0 bg-black/30 -z-10" />
+
+        <div className="relative w-full">
+          <Container className="pb-16">
+            <div className="max-w-xl text-white">
+              <h1 className="font-semibold text-6xl leading-[1.1] tracking-tight mb-4">
+                {data.heroTitle}
+              </h1>
+
+              <p className="font-[family-name:var(--font-inter)] font-normal text-base leading-normal tracking-normal text-[#EBEBEB] mb-6">
+                {data.heroContent}
+              </p>
+
+              <div className="flex gap-3">
+                <Link
+                  href="/quote"
+                  className="bg-[#D97B2C] text-[#212121] px-4 py-1 h-[52px] flex items-center text-sm leading-none font-medium"
+                >
+                  {data.heroCTA}
+                </Link>
+
+                <Link
+                  href="/realisations"
+                  className="bg-[#1c1c1c] border border-[#FBF3EA] px-4 py-1 h-[52px] flex items-center text-sm leading-none font-medium"
+                >
+                  {data.heroCTA2}
+                </Link>
+              </div>
+            </div>
+          </Container>
+        </div>
+      </section>
+      <PartnerLogos />
+      <Intro />
+      <Trades />
+      <section className="relative h-[500px] md:h-[600px]">
+        <Image
+          src="/trades-banner.webp"
+          alt="67 Design & Build — chantier"
+          fill
+          className="object-cover"
+        />
+      </section>
+      <Gallery />
+      <Sectors />
+      <Faq />
+      <CtaBanner />
     </div>
   );
 }

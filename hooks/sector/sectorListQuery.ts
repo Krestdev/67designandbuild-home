@@ -3,7 +3,7 @@ import { Sector } from "./type";
 
 class SectorListQuery extends BaseListQuery<Sector, Sector> {
   constructor() {
-    super("/sector");
+    super("/Sectors");
   }
 }
 

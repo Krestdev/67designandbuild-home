@@ -1,10 +1,10 @@
 import { BaseListQuery } from "../baseListQuery";
-import { CatalogPageGlobal } from "./type";
+import { Catalog } from "./type";
 
-class CatalogQuery extends BaseListQuery<CatalogPageGlobal, CatalogPageGlobal> {
+class CatalogListQuery extends BaseListQuery<Catalog, Catalog> {
   constructor() {
-    super("/catalog");
+    super("/catalogs");
   }
 }
 
-export const catalogQuery = new CatalogQuery();
+export const catalogListQuery = new CatalogListQuery();

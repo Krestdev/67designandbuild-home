@@ -3,7 +3,7 @@ import { CtaBannerGlobal } from "./type";
 
 class CtaBannerQuery extends BaseQuery<CtaBannerGlobal, CtaBannerGlobal> {
   constructor() {
-    super("/globals/cta");
+    super("/globals/cta-banner");
   }
 }
 

@@ -15,9 +15,9 @@ export class BaseQuery<T, U> {
     }
   };
 
-  getBlobal = async (): Promise<T> => {
+  getBlobal = async (params?: Record<string, string | number>): Promise<T> => {
     try {
-      const response = await api.get(this.url);
+      const response = await api.get(this.url, { params });
       return response.data;
     } catch (error) {
       throw error;
