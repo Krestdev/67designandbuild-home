@@ -1,24 +1,39 @@
-# Dockerfile
-# Use an official Node.js runtime as the base image
-FROM node:22-alpine
+FROM node:24-alpine AS base
 
-# Set the working directory
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files
-COPY package*.json ./
+COPY package.json package-lock.json ./
+RUN \
+  if [ -f package-lock.json ]; then npm ci; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Install dependencies
-RUN npm install
 
-# Copy the rest of the application files
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the Next.js app
 RUN npm run build
 
-# Expose the port Next.js runs on
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
 EXPOSE 3000
 
-# Start the Next.js app
-CMD ["npm", "start"]
+ENV PORT 3000
+
+CMD HOSTNAME="0.0.0.0" node server.js
