@@ -21,6 +21,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-RUN npm run payload migrate
-
-RUN npm start
+CMD [ "npm run payload migrate && npm start" ]
