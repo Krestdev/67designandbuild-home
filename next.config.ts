@@ -3,7 +3,6 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'standalone'
 };
 
 export default withPayload(nextConfig);

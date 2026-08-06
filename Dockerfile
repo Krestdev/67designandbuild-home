@@ -19,31 +19,8 @@ COPY . .
 
 RUN npm run build
 
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-
-COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next
-
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=deps /app/node_modules ./node_modules
-COPY payload.config.ts ./
-COPY payload ./payload
-COPY tsconfig.json ./tsconfig.json
-COPY package.json ./package.json
-
 EXPOSE 3000
 
-ENV PORT=3000
+RUN npm run payload migrate
 
-# Doker Host
-ENV HOSTNAME="0.0.0.0"
-
-COPY entrypoint.sh ./entrypoint.sh
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+RUN npm start
