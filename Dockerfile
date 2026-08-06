@@ -36,9 +36,9 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-# Doker Host
-ENV HOSTNAME="0.0.0.0"
 
-COPY entrypoint.sh ./entrypoint.sh
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+# Install Payload migrations
+RUN npm run payload migrate
+
+# Doker Host
+CMD HOSTNAME="0.0.0.0" node server.js
