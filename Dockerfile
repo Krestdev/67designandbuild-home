@@ -32,8 +32,8 @@ RUN mkdir .next
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/payload.config.ts ./
-COPY --from=deps /app/payload ./payload
+COPY payload.config.ts ./
+COPY payload ./payload
 
 EXPOSE 3000
 
