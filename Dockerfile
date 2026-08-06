@@ -34,6 +34,7 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=deps /app/node_modules ./node_modules
 COPY payload.config.ts ./
 COPY payload ./payload
+COPY tsconfig.json ./tsconfig.json
 
 EXPOSE 3000
 
