@@ -34,9 +34,9 @@ COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
 
-CMD HOSTNAME="0.0.0.0"
+ENV HOSTNAME="0.0.0.0"
 
 COPY entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
