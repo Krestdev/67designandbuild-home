@@ -35,6 +35,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY payload.config.ts ./
 COPY payload ./payload
 COPY tsconfig.json ./tsconfig.json
+COPY package.json ./package.json
 
 EXPOSE 3000
 
