@@ -41,7 +41,7 @@ export function CtaBanner() {
             </p>
 
            <Link
-  href="/quote"
+  href="/contact"
   className="self-start bg-[#D97B2C] text-[#212121] px-4 py-1 h-[52px] flex items-center justify-center text-sm leading-none font-medium"
 >
   {data.cta}
