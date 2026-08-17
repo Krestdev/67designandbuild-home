@@ -69,13 +69,17 @@ export default function ContactPage() {
 
   const [form, setForm] = useState<FormState>(initialForm);
   const [files, setFiles] = useState<File[]>([]);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (isLoading || error || !data) return null;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -102,7 +106,9 @@ export default function ContactPage() {
     setErrorMessage(null);
 
     try {
-      const attachmentIds = await Promise.all(files.map((file) => uploadMedia(file)));
+      const attachmentIds = await Promise.all(
+        files.map((file) => uploadMedia(file)),
+      );
 
       await quoteRequestQuery.post({
         fullName: form.fullName,
@@ -117,6 +123,8 @@ export default function ContactPage() {
         description: form.description,
         attachments: attachmentIds.length > 0 ? attachmentIds : undefined,
       });
+
+      // submit the form through email
 
       setStatus("success");
       setForm(initialForm);
@@ -167,20 +175,36 @@ export default function ContactPage() {
 
                 <div className="flex flex-col divide-y divide-[#21212114]">
                   <div className="py-3 first:pt-0">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("addressLabel")}</p>
-                    <p className="text-base font-medium text-[#212121]">{data.address}</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">
+                      {t("addressLabel")}
+                    </p>
+                    <p className="text-base font-medium text-[#212121]">
+                      {data.address}
+                    </p>
                   </div>
                   <div className="py-3">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("phoneLabel")}</p>
-                    <p className="text-base font-medium text-[#212121]">{data.phone}</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">
+                      {t("phoneLabel")}
+                    </p>
+                    <p className="text-base font-medium text-[#212121]">
+                      {data.phone}
+                    </p>
                   </div>
                   <div className="py-3">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("emailAddressLabel")}</p>
-                    <p className="text-base font-medium text-[#212121]">{data.email}</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">
+                      {t("emailAddressLabel")}
+                    </p>
+                    <p className="text-base font-medium text-[#212121]">
+                      {data.email}
+                    </p>
                   </div>
                   <div className="py-3 last:pb-0">
-                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">{t("hoursLabel")}</p>
-                    <p className="text-base font-medium text-[#212121]">{data.hours}</p>
+                    <p className="text-xs uppercase text-[#AFAFAF] mb-1">
+                      {t("hoursLabel")}
+                    </p>
+                    <p className="text-base font-medium text-[#212121]">
+                      {data.hours}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -252,7 +276,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className={labelClass}>
-                      {t("phoneLabel")} <span className="text-[#D97B2C]">*</span>
+                      {t("phoneLabel")}{" "}
+                      <span className="text-[#D97B2C]">*</span>
                     </label>
                     <input
                       name="phone"
@@ -265,7 +290,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className={labelClass}>
-                      {t("projectType")} <span className="text-[#D97B2C]">*</span>
+                      {t("projectType")}{" "}
+                      <span className="text-[#D97B2C]">*</span>
                     </label>
                     <select
                       name="projectType"
@@ -358,7 +384,9 @@ export default function ContactPage() {
                     <span className="text-[#D97B2C] font-medium underline">
                       {t("attachClick")}
                     </span>{" "}
-                    <span className="text-sm text-[#5B5B5B]">{t("attachDrop")}</span>
+                    <span className="text-sm text-[#5B5B5B]">
+                      {t("attachDrop")}
+                    </span>
                     <p className="text-xs text-[#AFAFAF] mt-1">
                       {t("attachHint")}
                     </p>
@@ -401,9 +429,7 @@ export default function ContactPage() {
                 </button>
 
                 {status === "success" && (
-                  <p className="text-sm text-green-700">
-                    {t("submitSuccess")}
-                  </p>
+                  <p className="text-sm text-green-700">{t("submitSuccess")}</p>
                 )}
                 {status === "error" && errorMessage && (
                   <p className="text-sm text-red-700">{errorMessage}</p>

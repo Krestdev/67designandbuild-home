@@ -77,6 +77,7 @@ export interface Config {
     faqs: Faq;
     categories: Category;
     articles: Article;
+    QuoteRequests: QuoteRequest;
     'payload-kv': PayloadKv;
     users: User;
     'payload-locked-documents': PayloadLockedDocument;
@@ -95,6 +96,7 @@ export interface Config {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    QuoteRequests: QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -464,6 +466,27 @@ export interface Article {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteRequests".
+ */
+export interface QuoteRequest {
+  id: number;
+  fullName: string;
+  company?: string | null;
+  email: string;
+  phone: string;
+  projectType: number | Service;
+  sector?: (number | null) | Sector;
+  location: string;
+  timeline?: string | null;
+  budget?: string | null;
+  description: string;
+  attachments?: (number | Media)[] | null;
+  status?: ('new' | 'contacted' | 'closed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -550,6 +573,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'articles';
         value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'QuoteRequests';
+        value: number | QuoteRequest;
       } | null)
     | ({
         relationTo: 'users';
@@ -793,6 +820,26 @@ export interface ArticlesSelect<T extends boolean = true> {
   featured?: T;
   category?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteRequests_select".
+ */
+export interface QuoteRequestsSelect<T extends boolean = true> {
+  fullName?: T;
+  company?: T;
+  email?: T;
+  phone?: T;
+  projectType?: T;
+  sector?: T;
+  location?: T;
+  timeline?: T;
+  budget?: T;
+  description?: T;
+  attachments?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

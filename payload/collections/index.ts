@@ -8,6 +8,8 @@ import { Career } from "./career.collection";
 import { Partners } from "./partners.collection";
 import { Category } from "./category.collection";
 import { Article } from "./article.collection";
+import { QuoteRequest } from "./quoterequest.collection";
+
 export const collections = [
   Service,
   Media,
@@ -19,4 +21,5 @@ export const collections = [
   Faq,
   Category,
   Article,
+  QuoteRequest,
 ];
