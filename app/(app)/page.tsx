@@ -78,7 +78,7 @@ export default function Home() {
           </Container>
         </div>
       </section>
-      <PartnerLogos />
+      {/* <PartnerLogos /> */}
       <Intro />
       <Trades />
       <section className="relative h-[500px] md:h-[600px]">
