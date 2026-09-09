@@ -30,7 +30,9 @@ export default function Home() {
   }
 
   if (error || !data) {
-    return <FetchError error={error} data={data === null || data === undefined} />;
+    return (
+      <FetchError error={error} data={data === null || data === undefined} />
+    );
   }
 
   return (
@@ -78,7 +80,7 @@ export default function Home() {
           </Container>
         </div>
       </section>
-      <PartnerLogos />
+      {/* <PartnerLogos /> */}
       <Intro />
       <Trades />
       <section className="relative h-[500px] md:h-[600px]">
