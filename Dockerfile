@@ -28,6 +28,5 @@ RUN --mount=type=cache,target=/app/.next/cache \
 EXPOSE 3000
 
 ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
 
 CMD npm run payload migrate && npm start
