@@ -15,11 +15,6 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM base AS builder
 WORKDIR /app
 
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
-# API URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL 
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
