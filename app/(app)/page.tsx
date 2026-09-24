@@ -30,7 +30,9 @@ export default function Home() {
   }
 
   if (error || !data) {
-    return <FetchError error={error} data={data === null || data === undefined} />;
+    return (
+      <FetchError error={error} data={data === null || data === undefined} />
+    );
   }
 
   return (
