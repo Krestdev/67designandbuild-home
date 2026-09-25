@@ -110,21 +110,23 @@ export default function ContactPage() {
         files.map((file) => uploadMedia(file)),
       );
 
-      await quoteRequestQuery.post({
-        fullName: form.fullName,
-        company: form.company || undefined,
-        email: form.email,
-        phone: form.phone,
-        projectType: Number(form.projectType),
-        sector: form.sector ? Number(form.sector) : undefined,
-        location: form.location,
-        timeline: form.timeline || undefined,
-        budget: form.budget || undefined,
-        description: form.description,
-        attachments: attachmentIds.length > 0 ? attachmentIds : undefined,
-      });
-
-      // submit the form through email
+      await quoteRequestQuery.post(
+        {
+          fullName: form.fullName,
+          company: form.company || undefined,
+          email: form.email,
+          phone: form.phone,
+          projectType: Number(form.projectType),
+          sector: form.sector ? Number(form.sector) : undefined,
+          location: form.location,
+          timeline: form.timeline || undefined,
+          budget: form.budget || undefined,
+          description: form.description,
+          attachments: attachmentIds.length > 0 ? attachmentIds : undefined,
+        },
+        // Language of the acknowledgment email sent to the requester
+        { locale },
+      );
 
       setStatus("success");
       setForm(initialForm);

@@ -7,6 +7,29 @@ import { collections } from "@/payload/collections";
 import { globals } from "@/payload/globals";
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 
+const smtpPort = Number(process.env.SMTP_PORT) || 587;
+// Port 465 = TLS implicite (Titan, Gmail…) ; sinon STARTTLS.
+const smtpSecure = smtpPort === 465;
+
+// Sans SMTP_HOST, Payload journalise les e-mails dans la console (utile en dev).
+const email = process.env.SMTP_HOST
+  ? nodemailerAdapter({
+      // From = compte authentifié par défaut : un From différent est souvent rejeté ou classé spam.
+      defaultFromAddress:
+        process.env.EMAIL_FROM || process.env.SMTP_USER || "contact@67designandbuild.com",
+      defaultFromName: "67 Design & Build",
+      transportOptions: {
+        host: process.env.SMTP_HOST,
+        port: smtpPort,
+        secure: smtpSecure,
+        connectionTimeout: 10_000,
+        greetingTimeout: 10_000,
+        socketTimeout: 20_000,
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      },
+    })
+  : undefined;
+
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
   editor: lexicalEditor(),
@@ -28,20 +51,7 @@ export default buildConfig({
     defaultLocale: "fr",
     fallback: true,
   },
-  email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM_EMAIL || "",
-    defaultFromName: process.env.SMTP_FROM_NAME || "",
-    // Nodemailer transportOptions
-    transportOptions: {
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secured: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    },
-  }),
+  email,
 
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || "",

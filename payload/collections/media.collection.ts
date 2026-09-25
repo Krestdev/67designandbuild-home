@@ -32,7 +32,14 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*'],
+    // Images for the site, plus the PDF/DWG files the quote request form accepts
+    mimeTypes: [
+      'image/*',
+      'application/pdf',
+      'application/acad',
+      'application/x-dwg',
+      'image/vnd.dwg',
+    ],
   },
   fields: [
     {

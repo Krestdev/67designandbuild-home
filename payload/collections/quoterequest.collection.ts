@@ -1,14 +1,37 @@
-import { CollectionConfig } from "payload";
+import { CollectionConfig, PayloadRequest } from "payload";
 import {
-  sendCompanyNotificationEmail,
-  sendUserNotificationEmail,
-} from "../../lib/email";
+  sendQuoteRequestEmails,
+  toEmailLocale,
+} from "../../lib/quoteRequestEmails";
+
+type RelationValue = number | string | { id: number | string } | null | undefined;
+
+const relationId = (value: RelationValue) =>
+  value && typeof value === "object" ? value.id : value;
+
+async function findTitle(
+  req: PayloadRequest,
+  collection: "Services" | "Sectors",
+  value: RelationValue,
+  locale: "fr" | "en" | "it",
+) {
+  const id = relationId(value);
+  if (id == null) return null;
+  try {
+    const doc = await req.payload.findByID({ collection, id, locale, depth: 0, req });
+    return (doc as { title?: string | null }).title ?? null;
+  } catch (err) {
+    console.error(`Error resolving ${collection} ${id} title:`, err);
+    return null;
+  }
+}
 
 export const QuoteRequest: CollectionConfig = {
   slug: "QuoteRequests",
   admin: { useAsTitle: "fullName" },
   access: {
-    read: () => true, // TODO: restrict to admin-only once auth roles exist
+    // Submissions hold personal data: only logged-in admins can list or read them.
+    read: ({ req }) => Boolean(req.user),
     create: () => true, // public form — no spam protection yet, flag for mentor
   },
   hooks: {
@@ -17,99 +40,75 @@ export const QuoteRequest: CollectionConfig = {
         if (operation !== "create") return;
 
         try {
-          // 1. Resolve Company Email from Contact Global
-          let companyEmail = process.env.CONTACT_RECEIVER_EMAIL || "no-reply@67designandbuild.com";
-          try {
-            const contactGlobal = await req.payload.findGlobal({
-              slug: "Contact",
-              req,
-            });
-            if (contactGlobal?.email) {
-              companyEmail = contactGlobal.email;
-            }
-          } catch (err) {
-            console.error("Error fetching Contact global email:", err);
-          }
+          // The form sends ?locale=… ; anything unknown falls back to French.
+          const locale = toEmailLocale(req.locale);
 
-          // 2. Resolve Service Title (projectType)
-          let projectTypeTitle = "Inconnu";
-          if (doc.projectType) {
+          let notifyEmail = process.env.APPLICATIONS_NOTIFY_EMAIL || null;
+          if (!notifyEmail) {
             try {
-              const serviceId = typeof doc.projectType === "object" ? doc.projectType.id : doc.projectType;
-              const service = await req.payload.findByID({
-                collection: "Services",
-                id: serviceId,
-                req,
-              });
-              if (service?.title) {
-                projectTypeTitle = service.title;
-              }
+              const contact = await req.payload.findGlobal({ slug: "Contact", req });
+              notifyEmail = contact?.email || null;
             } catch (err) {
-              console.error("Error resolving project type title:", err);
+              console.error("Error fetching Contact global email:", err);
             }
           }
 
-          // 3. Resolve Sector Title
-          let sectorTitle = "";
-          if (doc.sector) {
-            try {
-              const sectorId = typeof doc.sector === "object" ? doc.sector.id : doc.sector;
-              const sector = await req.payload.findByID({
-                collection: "Sectors",
-                id: sectorId,
-                req,
-              });
-              if (sector?.title) {
-                sectorTitle = sector.title;
-              }
-            } catch (err) {
-              console.error("Error resolving sector title:", err);
-            }
-          }
+          const [projectFr, projectLocalized, sectorFr, sectorLocalized] =
+            await Promise.all([
+              findTitle(req, "Services", doc.projectType, "fr"),
+              findTitle(req, "Services", doc.projectType, locale),
+              findTitle(req, "Sectors", doc.sector, "fr"),
+              findTitle(req, "Sectors", doc.sector, locale),
+            ]);
 
-          // 4. Resolve Attachments Details
           const attachments: Array<{ filename: string; url: string }> = [];
-          if (doc.attachments && Array.isArray(doc.attachments)) {
-            for (const attId of doc.attachments) {
-              try {
-                const id = typeof attId === "object" ? attId.id : attId;
-                const media = await req.payload.findByID({
-                  collection: "media",
-                  id,
-                  req,
-                });
-                if (media?.filename && media?.url) {
-                  attachments.push({
-                    filename: media.filename,
-                    url: media.url,
-                  });
-                }
-              } catch (err) {
-                console.error(`Error resolving media attachment ${attId}:`, err);
+          for (const value of (doc.attachments ?? []) as RelationValue[]) {
+            const id = relationId(value);
+            if (id == null) continue;
+            try {
+              const media = await req.payload.findByID({
+                collection: "media",
+                id,
+                depth: 0,
+                req,
+              });
+              if (media?.filename && media?.url) {
+                attachments.push({ filename: media.filename, url: media.url });
               }
+            } catch (err) {
+              console.error(`Error resolving media attachment ${id}:`, err);
             }
           }
 
-          // 5. Send Emails
-          const emailData = {
-            fullName: doc.fullName,
-            company: doc.company,
-            email: doc.email,
-            phone: doc.phone,
-            projectTypeTitle,
-            sectorTitle,
-            location: doc.location,
-            timeline: doc.timeline,
-            budget: doc.budget,
-            description: doc.description,
-            attachments,
-          };
-
-          // Send notification email to the company
-          await sendCompanyNotificationEmail(req.payload, emailData, companyEmail);
-
-          // Send confirmation email to the user
-          await sendUserNotificationEmail(req.payload, emailData);
+          // Awaited so the 201 is only returned once the emails are handed to SMTP.
+          await sendQuoteRequestEmails(
+            req.payload,
+            {
+              locale,
+              id: doc.id,
+              fullName: doc.fullName,
+              email: doc.email,
+              phone: doc.phone,
+              company: doc.company,
+              projectType: {
+                fr: projectFr ?? "Non précisé",
+                localized: projectLocalized ?? projectFr ?? "-",
+              },
+              sector:
+                sectorFr || sectorLocalized
+                  ? {
+                      fr: sectorFr ?? sectorLocalized ?? "",
+                      localized: sectorLocalized ?? sectorFr ?? "",
+                    }
+                  : null,
+              location: doc.location,
+              timeline: doc.timeline,
+              budget: doc.budget,
+              description: doc.description,
+              attachments,
+            },
+            notifyEmail,
+          );
         } catch (err) {
           console.error("Error in QuoteRequest afterChange hook:", err);
         }

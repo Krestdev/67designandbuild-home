@@ -15,9 +15,12 @@ export class BaseListQuery<T, U> {
     }
   };
 
-  post = async (body: U): Promise<T> => {
+  post = async (
+    body: U,
+    params?: Record<string, string | number>,
+  ): Promise<T> => {
     try {
-      const response = await api.post(this.url, body);
+      const response = await api.post(this.url, body, { params });
       return response.data;
     } catch (error) {
       throw error;
