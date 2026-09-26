@@ -92,6 +92,21 @@ export const messages = {
       "Votre demande a bien été envoyée. Nous vous répondrons rapidement.",
     privacyNote:
       "*Vos données sont utilisées uniquement pour traiter votre demande et ne sont pas transmises à des tiers.",
+    seeDetails: "Voir le détail",
+    collapse: "Réduire",
+    applyTitle: "Postuler",
+    applySubtitle:
+      "Quelques champs et votre CV suffisent. Vous recevrez un accusé de réception par e-mail.",
+    positionLabel: "Poste visé",
+    spontaneousApplication: "Candidature spontanée",
+    messageLabel: "Message",
+    messagePlaceholder: "Présentez-vous en quelques lignes...",
+    cvLabel: "Votre CV",
+    cvHint: "PDF, DOC, DOCX - 10 Mo max",
+    cvTooLarge: "Le CV doit faire 10 Mo maximum.",
+    cvRequired: "Veuillez joindre votre CV.",
+    applySubmit: "Envoyer ma candidature",
+    applySuccess: "Votre candidature a été envoyée. Merci !",
   },
   en: {
     loading: "Loading...",
@@ -180,6 +195,21 @@ export const messages = {
     submitSuccess: "Your request has been sent. We'll get back to you shortly.",
     privacyNote:
       "*Your data is used solely to process your request and is not shared with third parties.",
+    seeDetails: "View details",
+    collapse: "Collapse",
+    applyTitle: "Apply",
+    applySubtitle:
+      "A few fields and your CV are all we need. You will receive an acknowledgment by email.",
+    positionLabel: "Position",
+    spontaneousApplication: "Spontaneous application",
+    messageLabel: "Message",
+    messagePlaceholder: "Introduce yourself in a few lines...",
+    cvLabel: "Your CV",
+    cvHint: "PDF, DOC, DOCX - max 10 MB",
+    cvTooLarge: "The CV must be 10 MB or smaller.",
+    cvRequired: "Please attach your CV.",
+    applySubmit: "Send my application",
+    applySuccess: "Your application has been sent. Thank you!",
   },
   it: {
     loading: "Caricamento...",
@@ -268,6 +298,21 @@ export const messages = {
     submitSuccess: "La tua richiesta è stata inviata. Ti risponderemo a breve.",
     privacyNote:
       "*I tuoi dati sono utilizzati esclusivamente per elaborare la tua richiesta e non vengono condivisi con terzi.",
+    seeDetails: "Vedi dettagli",
+    collapse: "Riduci",
+    applyTitle: "Candidati",
+    applySubtitle:
+      "Bastano pochi campi e il tuo CV. Riceverai una conferma di ricezione via email.",
+    positionLabel: "Posizione",
+    spontaneousApplication: "Candidatura spontanea",
+    messageLabel: "Messaggio",
+    messagePlaceholder: "Presentati in poche righe...",
+    cvLabel: "Il tuo CV",
+    cvHint: "PDF, DOC, DOCX - max 10 MB",
+    cvTooLarge: "Il CV deve essere di massimo 10 MB.",
+    cvRequired: "Allega il tuo CV.",
+    applySubmit: "Invia la mia candidatura",
+    applySuccess: "La tua candidatura è stata inviata. Grazie!",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 

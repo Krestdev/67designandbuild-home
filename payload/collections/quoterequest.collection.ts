@@ -1,8 +1,6 @@
 import { CollectionConfig, PayloadRequest } from "payload";
-import {
-  sendQuoteRequestEmails,
-  toEmailLocale,
-} from "../../lib/quoteRequestEmails";
+import { sendQuoteRequestEmails } from "../../lib/quoteRequestEmails";
+import { resolveNotifyEmail, toEmailLocale } from "../../lib/emailLayout";
 
 type RelationValue = number | string | { id: number | string } | null | undefined;
 
@@ -43,15 +41,7 @@ export const QuoteRequest: CollectionConfig = {
           // The form sends ?locale=… ; anything unknown falls back to French.
           const locale = toEmailLocale(req.locale);
 
-          let notifyEmail = process.env.APPLICATIONS_NOTIFY_EMAIL || null;
-          if (!notifyEmail) {
-            try {
-              const contact = await req.payload.findGlobal({ slug: "Contact", req });
-              notifyEmail = contact?.email || null;
-            } catch (err) {
-              console.error("Error fetching Contact global email:", err);
-            }
-          }
+          const notifyEmail = await resolveNotifyEmail(req);
 
           const [projectFr, projectLocalized, sectorFr, sectorLocalized] =
             await Promise.all([

@@ -2,13 +2,10 @@ import type { Payload } from "payload";
 import {
   adminButton,
   adminUrl,
-  absoluteUrl,
   automaticFooter,
   detailsTable,
   escapeHtml,
-  fileList,
   layout,
-  loadAttachments,
   logoAttachments,
   oneLine,
   quoteBox,
@@ -16,105 +13,97 @@ import {
   sendAll,
   SITE_NAME,
   type EmailLocale,
-  type FileLink,
   type Mail,
 } from "./emailLayout";
 
-export interface QuoteRequestEmailInput {
+export interface ApplicationEmailInput {
   locale: EmailLocale;
   id: number | string;
   fullName: string;
   email: string;
   phone?: string | null;
-  company?: string | null;
-  // Service title in French (notification) and in the sender's locale (acknowledgment)
-  projectType: { fr: string; localized: string };
-  sector?: { fr: string; localized: string } | null;
-  location?: string | null;
-  timeline?: string | null;
-  budget?: string | null;
-  description?: string | null;
-  attachments?: FileLink[];
+  message?: string | null;
+  // Job title in French (notification) and in the applicant's locale (acknowledgment); null = spontaneous
+  job: { fr: string; localized: string; location?: string | null } | null;
+  cv?: { filename: string; content: Buffer } | null;
 }
 
 const ack = {
   fr: {
-    subject: "Nous avons bien reçu votre demande de devis",
+    subject: "Nous avons bien reçu votre candidature",
     greeting: (name: string) => `Bonjour ${name},`,
-    received: (project: string) =>
-      `Nous avons bien reçu votre demande de devis pour : ${project}.`,
+    received: (job: string) =>
+      `Nous avons bien reçu votre candidature pour le poste : ${job}.`,
+    receivedSpontaneous: "Nous avons bien reçu votre candidature spontanée.",
     next: "Notre équipe va l'étudier et reviendra vers vous.",
     questions:
       "Pour toute précision, vous pouvez répondre directement à cet e-mail.",
-    thanks: "Merci pour votre confiance.",
+    thanks: "Merci de l'intérêt que vous portez à notre entreprise.",
     signature: `L'équipe ${SITE_NAME}`,
     automatic: "Cet e-mail a été envoyé automatiquement.",
   },
   en: {
-    subject: "We have received your quote request",
+    subject: "We have received your application",
     greeting: (name: string) => `Hello ${name},`,
-    received: (project: string) =>
-      `We have received your quote request for: ${project}.`,
+    received: (job: string) =>
+      `We have received your application for the position: ${job}.`,
+    receivedSpontaneous: "We have received your spontaneous application.",
     next: "Our team will review it and get back to you.",
     questions: "If you have any questions, you can reply directly to this email.",
-    thanks: "Thank you for your trust.",
+    thanks: "Thank you for your interest in our company.",
     signature: `The ${SITE_NAME} team`,
     automatic: "This email was sent automatically.",
   },
   it: {
-    subject: "Abbiamo ricevuto la tua richiesta di preventivo",
+    subject: "Abbiamo ricevuto la tua candidatura",
     greeting: (name: string) => `Buongiorno ${name},`,
-    received: (project: string) =>
-      `Abbiamo ricevuto la tua richiesta di preventivo per: ${project}.`,
+    received: (job: string) =>
+      `Abbiamo ricevuto la tua candidatura per la posizione: ${job}.`,
+    receivedSpontaneous: "Abbiamo ricevuto la tua candidatura spontanea.",
     next: "Il nostro team la esaminerà e ti ricontatterà.",
     questions: "Per qualsiasi domanda, puoi rispondere direttamente a questa email.",
-    thanks: "Grazie per la fiducia.",
+    thanks: "Grazie per l'interesse verso la nostra azienda.",
     signature: `Il team ${SITE_NAME}`,
     automatic: "Questa email è stata inviata automaticamente.",
   },
 } satisfies Record<EmailLocale, unknown>;
 
-function buildNotification(input: QuoteRequestEmailInput, hasLogo: boolean) {
+function buildNotification(input: ApplicationEmailInput, hasLogo: boolean) {
   const rows: Array<[string, string | null | undefined]> = [
-    ["Type de projet", input.projectType.fr],
-    ["Secteur", input.sector?.fr],
+    ["Poste", input.job?.fr ?? "Candidature spontanée"],
+    ["Lieu du poste", input.job?.location],
     ["Nom", input.fullName],
-    ["Entreprise", input.company],
     ["E-mail", input.email],
     ["Téléphone", input.phone],
-    ["Localisation", input.location],
-    ["Délai souhaité", input.timeline],
-    ["Budget estimatif", input.budget ? `${input.budget} FCFA` : null],
     ["Langue du formulaire", input.locale.toUpperCase()],
   ];
   const filled = rows.filter((row): row is [string, string] => Boolean(row[1]));
-  const link = adminUrl("QuoteRequests", input.id);
-  const attachments = input.attachments ?? [];
+  const link = adminUrl("applications", input.id);
 
   const subject = oneLine(
-    `Nouvelle demande de devis - ${input.projectType.fr} - ${input.fullName}`,
+    input.job
+      ? `Nouvelle candidature - ${input.job.fr} - ${input.fullName}`
+      : `Nouvelle candidature spontanée - ${input.fullName}`,
   );
 
   const text = [
-    "Nouvelle demande de devis reçue via le site.",
+    "Nouvelle candidature reçue via le site.",
     "",
     ...filled.map(([label, value]) => `${label} : ${value}`),
     "",
-    "Description :",
-    input.description || "-",
-    ...(attachments.length
-      ? ["", "Pièces jointes :", ...attachments.map((a) => `- ${a.filename} : ${absoluteUrl(a.url)}`)]
-      : []),
+    "Message :",
+    input.message || "-",
+    ...(input.cv ? ["", `CV (en pièce jointe) : ${input.cv.filename}`] : []),
     ...(link ? ["", `Voir dans l'admin : ${link}`] : []),
   ].join("\n");
 
   const html = layout(
     subject,
-    `<h1 style="margin:0 0 20px;font-size:22px;">Nouvelle demande de devis</h1>
+    `<h1 style="margin:0 0 20px;font-size:22px;">Nouvelle candidature</h1>
 ${detailsTable(filled)}
-${sectionTitle("Description")}
-${quoteBox(input.description || "-")}
-${attachments.length ? sectionTitle("Pièces jointes") + fileList(attachments) : ""}
+${sectionTitle("Message")}
+${quoteBox(input.message || "-")}
+${input.cv ? sectionTitle("CV") + `<p style="margin:0;">${escapeHtml(input.cv.filename)} (en pièce jointe)</p>` : ""}
 ${link ? adminButton(link) : ""}`,
     hasLogo,
   );
@@ -122,12 +111,12 @@ ${link ? adminButton(link) : ""}`,
   return { subject, text, html };
 }
 
-function buildAcknowledgment(input: QuoteRequestEmailInput, hasLogo: boolean) {
+function buildAcknowledgment(input: ApplicationEmailInput, hasLogo: boolean) {
   const t = ack[input.locale];
   const subject = oneLine(`${t.subject} - ${SITE_NAME}`);
   const paragraphs = [
     t.greeting(input.fullName),
-    t.received(input.projectType.localized),
+    input.job ? t.received(input.job.localized) : t.receivedSpontaneous,
     t.next,
     t.questions,
     t.thanks,
@@ -148,25 +137,25 @@ ${automaticFooter(t.automatic)}`,
 }
 
 /**
- * Sends the internal notification and the sender's acknowledgment for a quote
- * request. Never throws: the submission is already saved when this runs.
+ * Sends the internal notification (with the CV attached) and the applicant's
+ * acknowledgment. Never throws: the application is already saved when this runs.
  */
-export async function sendQuoteRequestEmails(
+export async function sendApplicationEmails(
   payload: Payload,
-  input: QuoteRequestEmailInput,
+  input: ApplicationEmailInput,
   notifyEmail: string | null,
 ) {
-  const [logo, files] = await Promise.all([
-    logoAttachments(),
-    loadAttachments(input.attachments ?? []),
-  ]);
+  const logo = await logoAttachments();
+  const files = input.cv
+    ? [{ filename: oneLine(input.cv.filename), content: input.cv.content }]
+    : [];
   const notification = buildNotification(input, logo.length > 0);
   const acknowledgment = buildAcknowledgment(input, logo.length > 0);
-  const senderEmail = oneLine(input.email);
+  const applicantEmail = oneLine(input.email);
 
   if (!notifyEmail) {
     console.error(
-      "Quote request notification not sent: APPLICATIONS_NOTIFY_EMAIL is not set.",
+      "Application notification not sent: APPLICATIONS_NOTIFY_EMAIL is not set.",
     );
   }
 
@@ -176,7 +165,7 @@ export async function sendQuoteRequestEmails(
       "notification",
       {
         to: notifyEmail,
-        replyTo: senderEmail,
+        replyTo: applicantEmail,
         ...notification,
         attachments: [...logo, ...files],
       },
@@ -185,12 +174,12 @@ export async function sendQuoteRequestEmails(
   mails.push([
     "acknowledgment",
     {
-      to: senderEmail,
+      to: applicantEmail,
       ...(notifyEmail ? { replyTo: notifyEmail } : {}),
       ...acknowledgment,
       attachments: logo,
     },
   ]);
 
-  await sendAll(payload, `Quote request ${input.id}`, mails);
+  await sendAll(payload, `Application ${input.id}`, mails);
 }

@@ -71,7 +71,9 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true
+        media: true,
+        // Served only through Payload (admin-only read access), under a separate prefix
+        'private-files': { prefix: 'private' },
       },
       bucket: process.env.S3_BUCKET!,
       config: {

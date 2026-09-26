@@ -9,6 +9,8 @@ import { Partners } from "./partners.collection";
 import { Category } from "./category.collection";
 import { Article } from "./article.collection";
 import { QuoteRequest } from "./quoterequest.collection";
+import { Application } from "./application.collection";
+import { PrivateFiles } from "./privateFile.collection";
 
 export const collections = [
   Service,
@@ -22,4 +24,6 @@ export const collections = [
   Category,
   Article,
   QuoteRequest,
+  Application,
+  PrivateFiles,
 ];

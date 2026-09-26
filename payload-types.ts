@@ -78,6 +78,8 @@ export interface Config {
     categories: Category;
     articles: Article;
     QuoteRequests: QuoteRequest;
+    applications: Application;
+    'private-files': PrivateFile;
     'payload-kv': PayloadKv;
     users: User;
     'payload-locked-documents': PayloadLockedDocument;
@@ -97,6 +99,8 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     QuoteRequests: QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
+    applications: ApplicationsSelect<false> | ApplicationsSelect<true>;
+    'private-files': PrivateFilesSelect<false> | PrivateFilesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -487,6 +491,44 @@ export interface QuoteRequest {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "applications".
+ */
+export interface Application {
+  id: number;
+  /**
+   * Vide = candidature spontanée
+   */
+  career?: (number | null) | Career;
+  fullName: string;
+  email: string;
+  phone: string;
+  message?: string | null;
+  cv: number | PrivateFile;
+  status?: ('new' | 'contacted' | 'closed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-files".
+ */
+export interface PrivateFile {
+  id: number;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -577,6 +619,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'QuoteRequests';
         value: number | QuoteRequest;
+      } | null)
+    | ({
+        relationTo: 'applications';
+        value: number | Application;
+      } | null)
+    | ({
+        relationTo: 'private-files';
+        value: number | PrivateFile;
       } | null)
     | ({
         relationTo: 'users';
@@ -842,6 +892,39 @@ export interface QuoteRequestsSelect<T extends boolean = true> {
   status?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "applications_select".
+ */
+export interface ApplicationsSelect<T extends boolean = true> {
+  career?: T;
+  fullName?: T;
+  email?: T;
+  phone?: T;
+  message?: T;
+  cv?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-files_select".
+ */
+export interface PrivateFilesSelect<T extends boolean = true> {
+  prefix?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
