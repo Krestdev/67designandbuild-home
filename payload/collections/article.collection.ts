@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload";
+import { slugField } from "../fields/slug";
 
 export const Article: CollectionConfig = {
   slug: "articles",
@@ -6,7 +7,7 @@ export const Article: CollectionConfig = {
   access: { read: () => true },
   fields: [
     { name: "title", type: "text", localized: true, required: true },
-    { name: "slug", type: "text" },
+    slugField(),
     { name: "image", type: "upload", relationTo: "media", required: true },
     { name: "excerpt", type: "text", localized: true },
     { name: "publishedDate", type: "date", required: true },

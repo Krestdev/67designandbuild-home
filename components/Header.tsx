@@ -58,7 +58,7 @@ function NavDropdown<
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full mt-2 min-w-[260px]  bg-[#212121] py-2 shadow-lg">
+        <div className="absolute left-0 top-full mt-2 min-w-[260px]  bg-[#212121] py-2 shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto">
           {(items ?? []).map((item, idx) =>
             item.slug ? (
               <Link

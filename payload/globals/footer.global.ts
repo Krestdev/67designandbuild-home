@@ -28,14 +28,14 @@ export const Footer: GlobalConfig = {
       name: "usefullLinks",
       type: "array",
       fields: [
-        { name: "lable", type: "text" }
+        { name: "lable", type: "text", localized: true }
       ]
     },
     {
       name: "Enterprise",
       type: "array",
       fields: [
-        { name: "lable", type: "text" }
+        { name: "lable", type: "text", localized: true }
       ]
     }
   ],

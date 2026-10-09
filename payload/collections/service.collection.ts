@@ -1,14 +1,23 @@
 import { CollectionConfig } from "payload";
+import { slugField } from "../fields/slug";
+import { preventDeleteIfReferenced } from "../hooks/preventDeleteIfReferenced";
 
 export const Service: CollectionConfig = {
   slug: "Services",
   admin: { useAsTitle: "title" },
+  hooks: {
+    beforeDelete: [
+      preventDeleteIfReferenced([
+        { collection: "QuoteRequests", field: "projectType", label: "demande(s) de devis" },
+      ]),
+    ],
+  },
   access: {
     read: () => true, // 許可する
   },
   fields: [
     { name: "title", type: "text", localized: true },
-    { name: "slug", type: "text" },
+    slugField(),
     { name: "content", type: "richText", localized: true },
     { name: "preveiw", type: "upload", relationTo: "media" },
 
@@ -37,11 +46,14 @@ export const Service: CollectionConfig = {
     },
 
     // --- "Projets associés" grid — relates to your Catalog (projects) collection ---
+    // Derived from each project's `serviceCategory` — edit the project to change it.
     {
       name: "relatedProjects",
-      type: "relationship",
-      relationTo: "catalogs",
-      hasMany: true,
+      type: "join",
+      collection: "catalogs",
+      on: "serviceCategory",
+      defaultLimit: 0,
+      maxDepth: 2,
     },
   ],
 };

@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload";
+import { slugField } from "../fields/slug";
 
 export const Blog: CollectionConfig = {
   slug: "blog",
@@ -8,7 +9,7 @@ export const Blog: CollectionConfig = {
   },
   fields: [
     { name: "title", type: "text", localized: true },
-    { name: "slug", type: "text" },
+    slugField(),
     { name: "content", type: "richText", localized: true },
     { name: "preveiw", type: "upload", relationTo: "media" },
   ],
