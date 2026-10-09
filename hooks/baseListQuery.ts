@@ -6,9 +6,11 @@ export class BaseListQuery<T, U> {
     this.url = url;
   }
 
+  // Payload returns 10 docs by default; limit 0 returns all of them.
+  // Callers can still pass their own `limit`.
   get = async (params?: Record<string, string | number>): Promise<Array<T>> => {
     try {
-      const response = await api.get(this.url, { params });
+      const response = await api.get(this.url, { params: { limit: 0, ...params } });
       return response.data.docs;
     } catch (error) {
       throw error;

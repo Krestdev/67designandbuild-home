@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload";
+import { slugField } from "../fields/slug";
 
 export const Catalog: CollectionConfig = {
   slug: "catalogs",
@@ -8,7 +9,7 @@ export const Catalog: CollectionConfig = {
   },
   fields: [
     { name: "title", type: "text", localized: true, required: true },
-    { name: "slug", type: "text" },
+    slugField(),
     {
       name: "content",
       type: "richText",

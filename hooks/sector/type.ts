@@ -23,7 +23,8 @@ export interface Sector {
   content?: RichText | null;
   gallery?: SectorGalleryImage[] | null;
   associatedServices?: (Service | number)[] | null;
-  relatedProjects?: (Catalog | number)[] | null;
+  // Join field: projects whose sector/service points here.
+  relatedProjects?: { docs?: (Catalog | number)[]; hasNextPage?: boolean } | null;
   createdAt: string;
   updatedAt: string;
 }

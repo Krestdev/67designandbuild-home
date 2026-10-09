@@ -1,14 +1,23 @@
 import { CollectionConfig } from "payload";
+import { slugField } from "../fields/slug";
+import { preventDeleteIfReferenced } from "../hooks/preventDeleteIfReferenced";
 
 export const Sector: CollectionConfig = {
   slug: "Sectors",
   admin: { useAsTitle: "title" },
+  hooks: {
+    beforeDelete: [
+      preventDeleteIfReferenced([
+        { collection: "catalogs", field: "category", label: "réalisation(s)" },
+      ]),
+    ],
+  },
   access: {
     read: () => true,
   },
   fields: [
     { name: "title", type: "text", localized: true, required: true },
-    { name: "slug", type: "text" },
+    slugField(),
     { name: "image", type: "upload", relationTo: "media" },
     { name: "description", type: "textarea", localized: true },
     { name: "content", type: "richText", localized: true },
@@ -28,11 +37,14 @@ export const Sector: CollectionConfig = {
       hasMany: true,
     },
 
+    // Derived from each project's `category` — edit the project to change it.
     {
       name: "relatedProjects",
-      type: "relationship",
-      relationTo: "catalogs",
-      hasMany: true,
+      type: "join",
+      collection: "catalogs",
+      on: "category",
+      defaultLimit: 0,
+      maxDepth: 2,
     },
   ],
 };

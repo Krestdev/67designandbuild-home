@@ -84,7 +84,14 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    Services: {
+      relatedProjects: 'catalogs';
+    };
+    Sectors: {
+      relatedProjects: 'catalogs';
+    };
+  };
   collectionsSelect: {
     Services: ServicesSelect<false> | ServicesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -172,7 +179,10 @@ export interface UserAuthOperations {
 export interface Service {
   id: number;
   title?: string | null;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   content?: {
     root: {
       type: string;
@@ -203,7 +213,11 @@ export interface Service {
         id?: string | null;
       }[]
     | null;
-  relatedProjects?: (number | Catalog)[] | null;
+  relatedProjects?: {
+    docs?: (number | Catalog)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -214,6 +228,7 @@ export interface Service {
 export interface Media {
   id: number;
   alt?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -259,7 +274,10 @@ export interface Media {
 export interface Catalog {
   id: number;
   title: string;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   content?: {
     root: {
       type: string;
@@ -300,7 +318,10 @@ export interface Catalog {
 export interface Sector {
   id: number;
   title: string;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   image?: (number | null) | Media;
   description?: string | null;
   content?: {
@@ -325,7 +346,11 @@ export interface Sector {
       }[]
     | null;
   associatedServices?: (number | Service)[] | null;
-  relatedProjects?: (number | Catalog)[] | null;
+  relatedProjects?: {
+    docs?: (number | Catalog)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -336,7 +361,10 @@ export interface Sector {
 export interface Blog {
   id: number;
   title?: string | null;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   content?: {
     root: {
       type: string;
@@ -363,7 +391,10 @@ export interface Blog {
 export interface Career {
   id: number;
   title: string;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   profile: 'chantier-production' | 'bureau-etudes';
   contractType: 'cdi' | 'cdd' | 'stage';
   location: string;
@@ -429,7 +460,10 @@ export interface Faq {
 export interface Category {
   id: number;
   title: string;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -440,7 +474,10 @@ export interface Category {
 export interface Article {
   id: number;
   title: string;
-  slug?: string | null;
+  /**
+   * Partie de l'URL. Laisser vide pour la générer depuis « title ».
+   */
+  slug: string;
   image: number | Media;
   excerpt?: string | null;
   publishedDate: string;
@@ -657,6 +694,7 @@ export interface ServicesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

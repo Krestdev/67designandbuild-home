@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "payload": "payload"
+    "payload": "payload",
+    "seed": "payload run scripts/seed.ts",
+    "seed:bulk": "payload run scripts/seed-bulk.ts",
+    "seed:translations": "payload run scripts/seed-translations.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

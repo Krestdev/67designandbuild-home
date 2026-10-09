@@ -27,7 +27,8 @@ export interface Service {
   preveiw?: Media | number | null;
   applicationAreas?: ApplicationArea[] | null;
   deliverables?: Deliverable[] | null;
-  relatedProjects?: (Catalog | number)[] | null;
+  // Join field: projects whose sector/service points here.
+  relatedProjects?: { docs?: (Catalog | number)[]; hasNextPage?: boolean } | null;
   createdAt: string;
   updatedAt: string;
 }
