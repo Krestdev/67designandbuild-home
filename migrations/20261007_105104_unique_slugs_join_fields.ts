@@ -4,34 +4,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   // Statements are idempotent (IF EXISTS / IF NOT EXISTS) because local dev
   // databases may already have part of this schema applied by `push`.
   await db.execute(sql`
-  -- services: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "services" SET "slug" = 'services-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "services" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "services" o WHERE o."slug" = t."slug" AND o."id" < t."id");
-  -- sectors: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "sectors" SET "slug" = 'sectors-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "sectors" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "sectors" o WHERE o."slug" = t."slug" AND o."id" < t."id");
-  -- catalogs: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "catalogs" SET "slug" = 'catalogs-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "catalogs" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "catalogs" o WHERE o."slug" = t."slug" AND o."id" < t."id");
-  -- blog: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "blog" SET "slug" = 'blog-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "blog" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "blog" o WHERE o."slug" = t."slug" AND o."id" < t."id");
-  -- career: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "career" SET "slug" = 'career-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "career" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "career" o WHERE o."slug" = t."slug" AND o."id" < t."id");
-  -- categories: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "categories" SET "slug" = 'categories-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "categories" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "categories" o WHERE o."slug" = t."slug" AND o."id" < t."id");
-  -- articles: fill empty slugs, then de-duplicate by suffixing the id
-  UPDATE "articles" SET "slug" = 'articles-' || "id" WHERE "slug" IS NULL OR btrim("slug") = '';
-  UPDATE "articles" t SET "slug" = t."slug" || '-' || t."id"
-    WHERE EXISTS (SELECT 1 FROM "articles" o WHERE o."slug" = t."slug" AND o."id" < t."id");
+  -- Fill empty slugs, then de-duplicate by suffixing the id. Repeats until no
+  -- duplicates remain, since a suffixed slug can collide with an existing one
+  -- (e.g. a second "foo" with id 12 becomes "foo-12" while "foo-12" already exists).
+  DO $$
+  DECLARE
+    tbl text;
+    n integer;
+  BEGIN
+    FOREACH tbl IN ARRAY ARRAY['services', 'sectors', 'catalogs', 'blog', 'career', 'categories', 'articles'] LOOP
+      EXECUTE format('UPDATE %I SET "slug" = %L || ''-'' || "id" WHERE "slug" IS NULL OR btrim("slug") = ''''', tbl, tbl);
+      LOOP
+        EXECUTE format('UPDATE %I t SET "slug" = t."slug" || ''-'' || t."id" WHERE EXISTS (SELECT 1 FROM %I o WHERE o."slug" = t."slug" AND o."id" < t."id")', tbl, tbl);
+        GET DIAGNOSTICS n = ROW_COUNT;
+        EXIT WHEN n = 0;
+      END LOOP;
+    END LOOP;
+  END $$;
 
   ALTER TABLE "services" ALTER COLUMN "slug" SET NOT NULL;
   ALTER TABLE "sectors" ALTER COLUMN "slug" SET NOT NULL;
