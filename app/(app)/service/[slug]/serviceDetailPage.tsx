@@ -5,6 +5,7 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import { PlusCircle, CheckCircle2 } from "lucide-react";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
 import type { Service } from "@/hooks/service/type";
+import type { Catalog } from "@/hooks/catalog/type";
 import { CtaBanner } from "@/components/CtaBanner";
 import { useLocaleStore } from "@/store/locale-store";
 
@@ -18,7 +19,7 @@ function ServiceContainer({ children }: { children: React.ReactNode }) {
 function RelatedProjectCard({
   item,
 }: {
-  item: NonNullable<Service["relatedProjects"]>[number];
+  item: Catalog | number;
 }) {
   if (typeof item !== "object") return null;
 
@@ -77,7 +78,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
   }
 
   const service = services[0];
-  const relatedProjects = service.relatedProjects ?? [];
+  const relatedProjects = service.relatedProjects?.docs ?? [];
 
   const heroImage =
     service.preveiw && typeof service.preveiw === "object"

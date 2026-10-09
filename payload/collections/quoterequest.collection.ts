@@ -8,7 +8,8 @@ export const QuoteRequest: CollectionConfig = {
   slug: "QuoteRequests",
   admin: { useAsTitle: "fullName" },
   access: {
-    read: () => true, // TODO: restrict to admin-only once auth roles exist
+    // Contains customers' personal data — logged-in admin users only.
+    read: ({ req }) => Boolean(req.user),
     create: () => true, // public form — no spam protection yet, flag for mentor
   },
   hooks: {
@@ -18,7 +19,9 @@ export const QuoteRequest: CollectionConfig = {
 
         try {
           // 1. Resolve Company Email from Contact Global
-          let companyEmail = process.env.CONTACT_RECEIVER_EMAIL || "no-reply@67designandbuild.com";
+          let companyEmail =
+            process.env.CONTACT_RECEIVER_EMAIL ||
+            "no-reply@67designandbuild.com";
           try {
             const contactGlobal = await req.payload.findGlobal({
               slug: "Contact",
@@ -35,7 +38,10 @@ export const QuoteRequest: CollectionConfig = {
           let projectTypeTitle = "Inconnu";
           if (doc.projectType) {
             try {
-              const serviceId = typeof doc.projectType === "object" ? doc.projectType.id : doc.projectType;
+              const serviceId =
+                typeof doc.projectType === "object"
+                  ? doc.projectType.id
+                  : doc.projectType;
               const service = await req.payload.findByID({
                 collection: "Services",
                 id: serviceId,
@@ -53,7 +59,8 @@ export const QuoteRequest: CollectionConfig = {
           let sectorTitle = "";
           if (doc.sector) {
             try {
-              const sectorId = typeof doc.sector === "object" ? doc.sector.id : doc.sector;
+              const sectorId =
+                typeof doc.sector === "object" ? doc.sector.id : doc.sector;
               const sector = await req.payload.findByID({
                 collection: "Sectors",
                 id: sectorId,
@@ -85,7 +92,10 @@ export const QuoteRequest: CollectionConfig = {
                   });
                 }
               } catch (err) {
-                console.error(`Error resolving media attachment ${attId}:`, err);
+                console.error(
+                  `Error resolving media attachment ${attId}:`,
+                  err,
+                );
               }
             }
           }
@@ -106,7 +116,11 @@ export const QuoteRequest: CollectionConfig = {
           };
 
           // Send notification email to the company
-          await sendCompanyNotificationEmail(req.payload, emailData, companyEmail);
+          await sendCompanyNotificationEmail(
+            req.payload,
+            emailData,
+            companyEmail,
+          );
 
           // Send confirmation email to the user
           await sendUserNotificationEmail(req.payload, emailData);

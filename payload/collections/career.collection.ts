@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload";
+import { slugField } from "../fields/slug";
 
 export const Career: CollectionConfig = {
   slug: "career",
@@ -8,7 +9,7 @@ export const Career: CollectionConfig = {
   },
   fields: [
     { name: "title", type: "text", localized: true, required: true },
-    { name: "slug", type: "text" },
+    slugField(),
     {
       name: "profile",
       type: "select",

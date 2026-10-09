@@ -6,6 +6,7 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import { PlusCircle } from "lucide-react";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
 import type { Sector } from "@/hooks/sector/type";
+import type { Catalog } from "@/hooks/catalog/type";
 import { CtaBanner } from "@/components/CtaBanner";
 import { useLocaleStore } from "@/store/locale-store";
 
@@ -18,7 +19,7 @@ function SectorContainer({ children }: { children: React.ReactNode }) {
 function RelatedProjectCard({
   item,
 }: {
-  item: NonNullable<Sector["relatedProjects"]>[number];
+  item: Catalog | number;
 }) {
   if (typeof item !== "object") return null;
 
@@ -115,7 +116,7 @@ export default function SectorPage({
   if (error || !sectors || sectors.length === 0) return null;
 
   const sector = sectors[0];
-  const relatedProjects = sector.relatedProjects ?? [];
+  const relatedProjects = sector.relatedProjects?.docs ?? [];
   const galleryPhotos = sector.gallery ?? [];
   const associatedServices = sector.associatedServices ?? [];
 

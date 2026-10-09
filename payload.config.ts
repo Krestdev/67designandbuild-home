@@ -60,6 +60,13 @@ export default buildConfig({
   sharp,
   plugins: [
     s3Storage({
+      // Without S3 credentials in local dev, uploads fall back to the local
+      // `media/` dir. Production always uses S3 so a missing bucket fails loudly
+      // instead of writing to the container's ephemeral disk.
+      // alwaysInsertFields keeps the DB schema identical either way.
+      enabled:
+        Boolean(process.env.S3_BUCKET) || process.env.NODE_ENV === "production",
+      alwaysInsertFields: true,
       collections: {
         media: true
       },
