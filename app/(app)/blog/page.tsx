@@ -27,7 +27,7 @@ function ArticleCard({
   if (!imageUrl) return null;
 
   return (
-    <Link href={`/actualites/${article.slug ?? ""}`} className="block group">
+    <Link href={`/blog/${article.slug ?? ""}`} className="block group">
       <div className={`relative ${aspect} overflow-hidden mb-4`}>
         <Image
           src={imageUrl}
