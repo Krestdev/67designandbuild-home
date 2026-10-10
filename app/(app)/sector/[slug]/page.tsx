@@ -2,6 +2,7 @@
 import { use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { PlusCircle } from "lucide-react";
 import { sectorListQuery } from "@/hooks/sector/sectorListQuery";
@@ -113,7 +114,8 @@ export default function SectorPage({
   });
 
   if (isLoading) return null;
-  if (error || !sectors || sectors.length === 0) return null;
+  if (error) return null;
+  if (!sectors || sectors.length === 0) notFound();
 
   const sector = sectors[0];
   const relatedProjects = sector.relatedProjects?.docs ?? [];

@@ -1068,12 +1068,20 @@ export interface Footer {
   usefullLinks?:
     | {
         lable?: string | null;
+        /**
+         * Lien, ex. /about, /contact ou https://… — laisser vide pour du texte simple.
+         */
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
   Enterprise?:
     | {
         lable?: string | null;
+        /**
+         * Lien, ex. /about, /contact ou https://… — laisser vide pour du texte simple.
+         */
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1322,12 +1330,14 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         lable?: T;
+        url?: T;
         id?: T;
       };
   Enterprise?:
     | T
     | {
         lable?: T;
+        url?: T;
         id?: T;
       };
   updatedAt?: T;

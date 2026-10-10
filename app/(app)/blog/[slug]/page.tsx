@@ -3,6 +3,7 @@ import { use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { articleListQuery } from "@/hooks/article/articleListQuery";
 import type { Article } from "@/hooks/article/type";
@@ -21,7 +22,7 @@ function SimilarArticleCard({ article }: { article: Article }) {
   if (!imageUrl) return null;
 
   return (
-    <Link href={`/actualites/${article.slug ?? ""}`} className="block group">
+    <Link href={`/blog/${article.slug ?? ""}`} className="block group">
       <div className="relative aspect-[16/9] overflow-hidden mb-3">
         <Image
           src={imageUrl}
@@ -82,7 +83,8 @@ export default function ArticlePage({
   });
 
   if (articleLoading) return null;
-  if (articleError || !article) return null;
+  if (articleError) return null;
+  if (!article) notFound();
 
   const heroImage =
     article.image && typeof article.image === "object" ? article.image.url : null;
@@ -132,7 +134,7 @@ export default function ArticlePage({
                   ))}
                 </div>
                 <Link
-                  href="/actualites"
+                  href="/blog"
                   className="inline-flex items-center bg-[#212121] text-white px-4 py-2 text-sm font-medium"
                 >
                   {t("seeMore")}

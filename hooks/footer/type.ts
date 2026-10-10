@@ -13,10 +13,12 @@ export interface FooterGlobal {
   }[] | null;
   usefullLinks?: { // Note: 'usefullLinks' is spelled this way in the schema
     lable?: string | null; // Note: 'lable' is spelled this way in the schema
+    url?: string | null;
     id?: string | null;
   }[] | null;
   Enterprise?: {
     lable?: string | null; // Note: 'lable' is spelled this way in the schema
+    url?: string | null;
     id?: string | null;
   }[] | null;
   createdAt?: string | null;

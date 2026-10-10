@@ -3,6 +3,7 @@ import { use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { catalogListQuery } from "@/hooks/catalog/catalogListQuery";
 import type { Catalog } from "@/hooks/catalog/type";
@@ -74,7 +75,8 @@ export default function RealisationDetailPage({
   });
 
   if (isLoading) return null;
-  if (error || !item) return null;
+  if (error) return null;
+  if (!item) notFound();
 
   const heroImage =
     item.preveiw && typeof item.preveiw === "object" ? item.preveiw.url : null;

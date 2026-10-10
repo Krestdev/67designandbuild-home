@@ -63,7 +63,7 @@ export default function Home() {
 
               <div className="flex gap-3">
                 <Link
-                  href="/quote"
+                  href="/contact"
                   className="bg-[#D97B2C] text-[#212121] px-4 py-1 h-[52px] flex items-center text-sm leading-none font-medium"
                 >
                   {data.heroCTA}
