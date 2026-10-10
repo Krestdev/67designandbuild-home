@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { PlusCircle, CheckCircle2 } from "lucide-react";
 import { serviceListQuery } from "@/hooks/service/serviceListQuery";
@@ -73,9 +74,8 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
   });
 
   if (serviceLoading) return null;
-  if (serviceError || !services || services.length === 0) {
-    return null;
-  }
+  if (serviceError) return null;
+  if (!services || services.length === 0) notFound();
 
   const service = services[0];
   const relatedProjects = service.relatedProjects?.docs ?? [];

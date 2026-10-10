@@ -3,6 +3,7 @@ import { use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { articleListQuery } from "@/hooks/article/articleListQuery";
 import type { Article } from "@/hooks/article/type";
@@ -82,7 +83,8 @@ export default function ArticlePage({
   });
 
   if (articleLoading) return null;
-  if (articleError || !article) return null;
+  if (articleError) return null;
+  if (!article) notFound();
 
   const heroImage =
     article.image && typeof article.image === "object" ? article.image.url : null;

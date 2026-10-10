@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 import { FaLinkedin, FaFacebook, FaXTwitter, FaLink } from "react-icons/fa6";
 import { footerQuery } from "@/hooks/footer/footerQuery";
 import { Container } from "@/components/Container";
@@ -14,6 +15,23 @@ const socialIcons: Record<
   facebook: FaFacebook,
   x: FaXTwitter,
 };
+
+// Footer link items: a link when the editor set a URL, plain text otherwise.
+function FooterLink({ label, url }: { label?: string | null; url?: string | null }) {
+  if (!url) return <>{label}</>;
+  if (url.startsWith("/")) {
+    return (
+      <Link href={url} className="hover:text-white transition">
+        {label}
+      </Link>
+    );
+  }
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+      {label}
+    </a>
+  );
+}
 
 export function Footer() {
   const { locale, setLocale, t } = useLocaleStore();
@@ -32,7 +50,9 @@ export function Footer() {
             <h4 className="font-semibold mb-4">{t("footerCompany")}</h4>
             <ul className="space-y-3 text-white/70">
               {data.Enterprise?.map((item) => (
-                <li key={item.id}>{item.lable}</li>
+                <li key={item.id}>
+                  <FooterLink label={item.lable} url={item.url} />
+                </li>
               ))}
             </ul>
           </div>
@@ -41,7 +61,9 @@ export function Footer() {
             <h4 className="font-semibold mb-4">{t("footerLinks")}</h4>
             <ul className="space-y-3 text-white/70">
               {data.usefullLinks?.map((item) => (
-                <li key={item.id}>{item.lable}</li>
+                <li key={item.id}>
+                  <FooterLink label={item.lable} url={item.url} />
+                </li>
               ))}
             </ul>
           </div>
@@ -49,8 +71,23 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">{t("footerContact")}</h4>
             <ul className="space-y-3 text-white/70">
-              <li>{data.contactInfo?.contactEmail}</li>
-              <li>{data.contactInfo?.contactPhone}</li>
+              {data.contactInfo?.contactEmail && (
+                <li>
+                  <a href={`mailto:${data.contactInfo.contactEmail}`} className="hover:text-white transition">
+                    {data.contactInfo.contactEmail}
+                  </a>
+                </li>
+              )}
+              {data.contactInfo?.contactPhone && (
+                <li>
+                  <a
+                    href={`tel:${data.contactInfo.contactPhone.replace(/[^\d+]/g, "")}`}
+                    className="hover:text-white transition"
+                  >
+                    {data.contactInfo.contactPhone}
+                  </a>
+                </li>
+              )}
               <li>{data.contactInfo?.contactAddress}</li>
             </ul>
             <div className="flex gap-4 mt-4">
