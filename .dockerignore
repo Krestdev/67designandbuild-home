@@ -15,3 +15,5 @@ yarn-error.log*
 .gemini
 .idea
 .vscode
+media
+*.log
