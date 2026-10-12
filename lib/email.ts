@@ -53,20 +53,21 @@ const getAbsoluteUrl = (url: string) => {
 export async function sendCompanyNotificationEmail(
   payload: Payload,
   data: QuoteRequestEmailData,
-  receiverEmail: string
+  receiverEmail: string,
 ) {
-  const transporter = getTransporter();
-  const fromEmail = process.env.SMTP_FROM_EMAIL || "no-reply@67designandbuild.com";
+  // const transporter = getTransporter();
+  const fromEmail =
+    process.env.SMTP_FROM_EMAIL || "no-reply@67designandbuild.com";
   const fromName = process.env.SMTP_FROM_NAME || "67 Design & Build";
 
   const attachmentsListHtml = data.attachments?.length
     ? `<ul>
         ${data.attachments
-      .map(
-        (att) =>
-          `<li><a href="${getAbsoluteUrl(att.url)}" style="color: #D97B2C; text-decoration: underline;" target="_blank">${att.filename}</a></li>`
-      )
-      .join("")}
+          .map(
+            (att) =>
+              `<li><a href="${getAbsoluteUrl(att.url)}" style="color: #D97B2C; text-decoration: underline;" target="_blank">${att.filename}</a></li>`,
+          )
+          .join("")}
        </ul>`
     : "<p style='color: #888888; font-style: italic;'>Aucun fichier joint</p>";
 
@@ -220,8 +221,8 @@ export async function sendCompanyNotificationEmail(
     from: `"${fromName}" <${fromEmail}>`,
     to: receiverEmail,
     subject: `[Devis] Nouvelle demande de ${data.fullName} - ${data.projectTypeTitle}`,
-    html: htmlContent
-  })
+    html: htmlContent,
+  });
 
   // await transporter.sendMail({
   //   from: `"${fromName}" <${fromEmail}>`,
@@ -236,10 +237,11 @@ export async function sendCompanyNotificationEmail(
  */
 export async function sendUserNotificationEmail(
   payload: Payload,
-  data: QuoteRequestEmailData
+  data: QuoteRequestEmailData,
 ) {
-  const transporter = getTransporter();
-  const fromEmail = process.env.SMTP_FROM_EMAIL || "no-reply@67designandbuild.com";
+  // const transporter = getTransporter();
+  const fromEmail =
+    process.env.SMTP_FROM_EMAIL || "no-reply@67designandbuild.com";
   const fromName = process.env.SMTP_FROM_NAME || "67 Design & Build";
 
   const htmlContent = `
