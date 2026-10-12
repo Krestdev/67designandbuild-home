@@ -6,6 +6,7 @@ import sharp from "sharp";
 import { collections } from "@/payload/collections";
 import { globals } from "@/payload/globals";
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { migrations } from "./migrations";
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -51,6 +52,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || "",
     },
+    // Applied automatically when Payload connects in production (see
+    // instrumentation.ts), so the slim Docker image doesn't need the CLI.
+    prodMigrations: migrations,
   }),
 
   // If you want to resize images, crop, set focal point, etc.
