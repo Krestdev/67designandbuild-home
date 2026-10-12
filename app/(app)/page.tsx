@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { homeQuery } from "@/hooks/home/homeQuery";
 import FetchError from "@/components/errors";
-import { PartnerLogos } from "@/components/PartnerLogos";
 import { Intro } from "@/components/Intro";
 import { Trades } from "@/components/Trades";
 import { Gallery } from "@/components/Gallery";
